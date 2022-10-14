@@ -1,0 +1,15 @@
+﻿@model dynamic
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    @if (Model is Models.ErrorViewModel evm && evm.ErrorTitle != null)
+    {
+        <div aria-live="assertive" aria-atomic="true" role="alert" class="toast">
+            <div class="toast-header">
+                <strong class="me-auto">@evm.ErrorTitle</strong>
+            </div>
+            <div class="toast-body">
+                @evm.ErrorDetail
+            </div>
+        </div>   
+    }
+</div>

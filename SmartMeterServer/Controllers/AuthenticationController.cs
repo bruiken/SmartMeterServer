@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace SmartMeterServer.Controllers
 {
@@ -13,10 +14,12 @@ namespace SmartMeterServer.Controllers
         }
 
         private readonly Abstract.Services.IUserService _userService;
+        private readonly IStringLocalizer<AuthenticationController> _localizer;
 
-        public AuthenticationController(Abstract.Services.IUserService userService)
+        public AuthenticationController(Abstract.Services.IUserService userService, IStringLocalizer<AuthenticationController> localizer)
         {
             _userService = userService;
+            _localizer = localizer;
         }
 
         [HttpGet]
@@ -46,7 +49,7 @@ namespace SmartMeterServer.Controllers
 
         [HttpPost]
         [Route("")]
-        public IActionResult SubmitLogin(Models.LoginModel model)
+        public IActionResult SubmitLogin([FromForm] Models.LoginModel model)
         {
             if (_userService.TryLogin(model.Username, model.Password, model.RememberMe))
             {
@@ -65,6 +68,8 @@ namespace SmartMeterServer.Controllers
             else
             {
                 model.Password = string.Empty;
+                model.ErrorTitle = _localizer[Resources.Controllers.AuthenticationController.Errors.CannotLogin];
+                model.ErrorDetail = _localizer[Resources.Controllers.AuthenticationController.Errors.WrongUsernamePassword];
                 return View(Actions.Index, model);
             }
         }
