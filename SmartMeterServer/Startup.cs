@@ -1,0 +1,121 @@
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
+
+namespace SmartMeterServer
+{
+    public class Startup
+    {
+        public IConfiguration Configuration { get; }
+
+        public const string DATABASE_SETTINGS_KEY = "Database";
+        public const string JWT_SETTINGS_KEY = "JWT";
+        public const string COOKIES_SETTINGS_KEY = "Cookies";
+        public const string GENERAL_SETTINGS_KEY = "General";
+        
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<Abstract.Services.ISecurityService, Concrete.Services.SecurityService>();
+            services.AddScoped<Abstract.Services.IUserService, Concrete.Services.UserService>();
+            services.AddScoped<Abstract.Services.ICurrentUserService, Services.CurrentUserService>();
+
+            services.Configure<Settings.DatabaseSettings>(Configuration.GetSection(DATABASE_SETTINGS_KEY));
+            services.Configure<Abstract.Settings.JwtSettings>(Configuration.GetSection(JWT_SETTINGS_KEY));
+            services.Configure<Settings.CookieSettings>(Configuration.GetSection(COOKIES_SETTINGS_KEY));
+            services.Configure<Abstract.Settings.CookieSettings>(Configuration.GetSection(COOKIES_SETTINGS_KEY));
+            services.Configure<Abstract.Settings.GeneralSettings>(Configuration.GetSection(GENERAL_SETTINGS_KEY));
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+                .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            var dbsettings = Configuration.GetSection(DATABASE_SETTINGS_KEY).Get<Settings.DatabaseSettings>();
+            services.AddDbContextPool<Data.SmartMeterContext>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(
+                        $"server={dbsettings.Host};user={dbsettings.User};password={dbsettings.Password};database={dbsettings.Database}",
+                        ServerVersion.Parse($"{dbsettings.MajorVersion}.{dbsettings.MinorVersion}.{dbsettings.BuildVersion}")
+                    )
+            );
+        }
+
+        private static void MigrateDB(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
+            using var context = serviceScope.ServiceProvider.GetService<Data.SmartMeterContext>();
+
+            if (context != null) context.Database.Migrate();
+        }
+
+        private static void SeedAdminUser(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
+            var userService = serviceScope.ServiceProvider.GetService<Abstract.Services.IUserService>();
+            userService.CreateAdminUser();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            var supportedCultures = new[] { "en-US", "nl" };
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
+
+            app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseMiddleware<Middlewares.AuthenticationMiddleware>();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            MigrateDB(app);
+
+            SeedAdminUser(app);
+        }
+    }
+}

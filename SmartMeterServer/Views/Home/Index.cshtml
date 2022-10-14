@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Home page";
+}
+
+@inject IViewLocalizer _localizer;
+
+<div class="text-center">
+    <h1 class="display-4">@_localizer[Resources.Views.Home.Index.Welcome]</h1>
+</div>

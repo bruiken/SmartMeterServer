@@ -1,0 +1,44 @@
+﻿@model LoginModel
+
+@inject IViewLocalizer _localizer
+
+@{
+    ViewData["Title"] = _localizer[Resources.Views.Authentication.Index.Login];
+}
+
+<div class="d-flex justify-content-center">
+    @using (Html.BeginForm(Controllers.AuthenticationController.Actions.Index, Controllers.AuthenticationController.Name, FormMethod.Post, new { @class = "p-3 border rounded" }))
+    {
+        @Html.HiddenFor(m => m.RedirectTo)
+        <div class="flex-row">
+            <div class="flex-column">
+                @_localizer[Resources.Views.Authentication.Index.Username]:
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="flex-column">
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="flex-column">
+                @_localizer[Resources.Views.Authentication.Index.Password]:
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="flex-column">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="flex-column">
+                @Html.CheckBoxFor(m => m.RememberMe)&nbsp;@Html.LabelFor(m => m.RememberMe, _localizer.GetString(Resources.Views.Authentication.Index.RememberMe).Value)
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="flex-column pt-3">
+                <input class="btn btn-primary" type="submit" value="@_localizer[Resources.Views.Authentication.Index.Login]" />
+            </div>
+        </div>
+    }
+</div>
