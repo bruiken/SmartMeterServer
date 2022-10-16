@@ -34,7 +34,7 @@ namespace Concrete.Services
             _db.SaveChanges();
         }
 
-        public Abstract.Models.User? GetById(int id)
+        public User? GetById(int id)
         {
             Data.Models.User? user = _db.Users
                 .SingleOrDefault(u => u.Id == id);
@@ -56,14 +56,14 @@ namespace Concrete.Services
             return now.AddMonths(_cookieSettings.RefreshTokenValidityMonths).Subtract(now);
         }
 
-        public bool TryLogin(string username, string password, bool rememberLogin)
+        public void Login(string username, string password, bool rememberLogin)
         {
             Data.Models.User? user = _db.Users
                 .SingleOrDefault(u => u.Username == username);
 
             if (user == null)
             {
-                return false;
+                throw new Exceptions.FailedLoginException();
             }
 
             Hash hash = new()
@@ -74,7 +74,7 @@ namespace Concrete.Services
 
             if (_securityService.Verify(hash, password))
             {
-                Abstract.Models.User userModel = Util.Converters.Convert(user);
+                User userModel = Util.Converters.Convert(user);
                 _currentUserService.SaveAccessToken(_securityService.GenerateJwtToken(userModel, TimeSpan.FromHours(_cookieSettings.AccessTokenValidityHours)));
 
                 if (rememberLogin)
@@ -91,10 +91,11 @@ namespace Concrete.Services
                     _db.SaveChanges();
                     RemoveExpiredTokens(user.Id);
                 }
-                return true;
             }
-
-            return false;
+            else
+            {
+                throw new Exceptions.FailedLoginException();
+            }
         }
 
         public bool TryLoginWithRefreshToken()
@@ -109,7 +110,7 @@ namespace Concrete.Services
                     Data.Models.RefreshToken? refreshToken = _db.RefreshTokens
                         .SingleOrDefault(r => r.Token == cookieRefreshToken);
                     int userId = int.Parse(jwtToken.Claims.First(c => c.Type == _securityService.IdClaim).Value);
-                    Abstract.Models.User? user = GetById(userId);
+                    User? user = GetById(userId);
 
                     if (refreshToken != null && user != null)
                     {

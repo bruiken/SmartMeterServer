@@ -6,7 +6,7 @@
 
         bool TryLoginWithRefreshToken();
 
-        bool TryLogin(string username, string password, bool rememberLogin);
+        void Login(string username, string password, bool rememberLogin);
 
         int CreateUser(Models.CreateUser user);
 

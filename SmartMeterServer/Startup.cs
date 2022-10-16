@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace SmartMeterServer
@@ -23,6 +24,7 @@ namespace SmartMeterServer
         {
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddScoped<Abstract.Services.ISecurityService, Concrete.Services.SecurityService>();
             services.AddScoped<Abstract.Services.IUserService, Concrete.Services.UserService>();
@@ -36,7 +38,10 @@ namespace SmartMeterServer
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-            services.AddMvc()
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<Attributes.SmartMeterExceptionHandlingFilterAttribute>();
+            })
                 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
