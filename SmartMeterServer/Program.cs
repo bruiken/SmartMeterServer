@@ -1,4 +1,4 @@
-﻿namespace SmartMeterServer
+﻿namespace Rotom
 {
     public class Program
     {

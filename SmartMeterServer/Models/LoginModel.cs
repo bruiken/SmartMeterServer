@@ -1,4 +1,4 @@
-﻿namespace SmartMeterServer.Models
+﻿namespace Rotom.Models
 {
     public class LoginModel : ErrorViewModel
     {

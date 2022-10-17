@@ -1,4 +1,4 @@
-﻿namespace SmartMeterServer.Settings
+﻿namespace Rotom.Settings
 {
     public class CookieSettings
     {

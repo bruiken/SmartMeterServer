@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Localization;
 using System.Reflection;
 
-namespace SmartMeterServer.Attributes
+namespace Rotom.Attributes
 {
     public class SmartMeterExceptionHandlingFilterAttribute : ExceptionFilterAttribute
     {

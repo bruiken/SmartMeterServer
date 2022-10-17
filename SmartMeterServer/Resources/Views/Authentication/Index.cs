@@ -1,4 +1,4 @@
-﻿namespace SmartMeterServer.Resources.Views.Authentication
+﻿namespace Rotom.Resources.Views.Authentication
 {
     public static class Index
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartMeterServer.Models
+namespace Rotom.Models
 {
     public class CreateUserModel : ErrorViewModel
     {

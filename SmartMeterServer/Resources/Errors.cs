@@ -1,4 +1,4 @@
-﻿namespace SmartMeterServer.Resources
+﻿namespace Rotom.Resources
 {
     public class Errors
     {

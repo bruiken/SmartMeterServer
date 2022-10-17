@@ -1,4 +1,4 @@
-﻿namespace SmartMeterServer.Resources.Views.Home
+﻿namespace Rotom.Resources.Views.Home
 {
     public static class Index
     {

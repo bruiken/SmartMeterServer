@@ -1,7 +1,7 @@
 ﻿using Abstract.Models;
 using Microsoft.Extensions.Options;
 
-namespace SmartMeterServer.Services
+namespace Rotom.Services
 {
     public class CurrentUserService : Abstract.Services.ICurrentUserService
     {

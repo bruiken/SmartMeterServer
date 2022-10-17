@@ -1,4 +1,4 @@
-﻿namespace SmartMeterServer.Resources.Views.User
+﻿namespace Rotom.Resources.Views.User
 {
     public static class Create
     {

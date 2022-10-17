@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartMeterServer.Attributes;
+using Rotom.Attributes;
 
-namespace SmartMeterServer.Controllers
+namespace Rotom.Controllers
 {
     [Route("Authentication")]
     public class AuthenticationController : Controller

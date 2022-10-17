@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace SmartMeterServer.Middlewares
+namespace Rotom.Middlewares
 {
     public class AuthenticationMiddleware
     {

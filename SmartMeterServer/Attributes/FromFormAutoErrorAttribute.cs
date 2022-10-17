@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SmartMeterServer.Attributes
+namespace Rotom.Attributes
 {
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
     public class FromFormAutoErrorAttribute : FromFormAttribute

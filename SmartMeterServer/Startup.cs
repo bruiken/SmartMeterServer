@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace SmartMeterServer
+namespace Rotom
 {
     public class Startup
     {

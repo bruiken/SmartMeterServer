@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SmartMeterServer.Controllers
+namespace Rotom.Controllers
 {
     [Attributes.AuthenticationFilter]
     [Route("")]

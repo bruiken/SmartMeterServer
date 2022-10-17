@@ -1,4 +1,4 @@
-﻿namespace SmartMeterServer.Util
+﻿namespace Rotom.Util
 {
     public static class Converters
     {
