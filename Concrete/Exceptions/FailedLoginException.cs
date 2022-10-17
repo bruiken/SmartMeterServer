@@ -2,7 +2,7 @@
 {
     public class FailedLoginException : Abstract.Exceptions.SmartMeterException
     {
-        public override string ErrorKey => ErrorKeys.Keys.CannotLogin;
-        public override string MessageKey => ErrorKeys.Messages.InvalidUsernamePassword;
+        public override string ErrorKey { get; set; } = ErrorKeys.Keys.CannotLogin;
+        public override string MessageKey { get; set; } = ErrorKeys.Messages.InvalidUsernamePassword;
     }
 }

@@ -17,7 +17,7 @@
         </div>
         <div class="flex-row">
             <div class="flex-column">
-                @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control", required = "required" })
             </div>
         </div>
         <div class="flex-row">
@@ -27,7 +27,7 @@
         </div>
         <div class="flex-row">
             <div class="flex-column">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", required = "required" })
             </div>
         </div>
         <div class="flex-row">

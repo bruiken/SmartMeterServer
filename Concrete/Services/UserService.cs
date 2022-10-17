@@ -58,6 +58,14 @@ namespace Concrete.Services
 
         public void Login(string username, string password, bool rememberLogin)
         {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                throw new Exceptions.InvalidModelException
+                {
+                    ErrorKey = Exceptions.ErrorKeys.Keys.CannotLogin
+                };
+            }
+
             Data.Models.User? user = _db.Users
                 .SingleOrDefault(u => u.Username == username);
 
@@ -142,7 +150,10 @@ namespace Concrete.Services
         {
             if (string.IsNullOrWhiteSpace(user.Username) || string.IsNullOrWhiteSpace(user.Password))
             {
-                throw new Exceptions.InvalidModelException();
+                throw new Exceptions.InvalidModelException()
+                {
+                    ErrorKey = Exceptions.ErrorKeys.Keys.CannotCreateUser
+                };
             }
             if (_db.Users.Any(u => u.Username.ToLower() == user.Username.ToLower()))
             {

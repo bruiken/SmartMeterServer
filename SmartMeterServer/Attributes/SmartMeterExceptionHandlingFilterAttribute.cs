@@ -90,8 +90,8 @@ namespace SmartMeterServer.Attributes
                     evm.ErrorTitle = _errorLocalizer[sme.ErrorKey];
                     evm.ErrorDetail = _errorLocalizer[sme.MessageKey];
 
-                    var viewData = new ViewDataDictionary<Models.LoginModel>(new EmptyModelMetadataProvider(), context.ModelState);
-                    viewData = new ViewDataDictionary<Models.LoginModel>(viewData, mbContext.Model);
+                    var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), context.ModelState);
+                    viewData = new ViewDataDictionary<Models.ErrorViewModel>(viewData, mbContext.Model);
 
                     context.Result = new ViewResult()
                     {

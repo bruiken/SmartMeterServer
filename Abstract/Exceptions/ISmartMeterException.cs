@@ -2,8 +2,8 @@
 {
     public abstract class SmartMeterException : Exception
     {
-        public abstract string ErrorKey { get; }
+        public abstract string ErrorKey { get; set; }
 
-        public abstract string MessageKey { get; }
+        public abstract string MessageKey { get; set; }
     }
 }
