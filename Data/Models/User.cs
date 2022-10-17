@@ -7,6 +7,9 @@ namespace Data.Models
     {
         public int Id { get; set; }
 
+        [Required]
+        public int RoleId { get; set; }
+
         [MaxLength(60)]
         [Required]
         public string Username { get; set; }

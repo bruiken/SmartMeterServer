@@ -3,6 +3,7 @@
     public interface ICurrentUserService
     {
         string CurrentUserContextItem { get; }
+        string PermissionsContextItem { get; }
 
         Models.User? GetCurrentUser();
 

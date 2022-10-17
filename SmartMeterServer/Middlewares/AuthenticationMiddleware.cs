@@ -15,6 +15,7 @@ namespace Rotom.Middlewares
             HttpContext context,
             IOptions<Settings.CookieSettings> options,
             Abstract.Services.IUserService userService, 
+            Abstract.Services.IRoleService roleService, 
             Abstract.Services.ISecurityService securityService, 
             Abstract.Services.ICurrentUserService currentUserService)
         {
@@ -27,6 +28,7 @@ namespace Rotom.Middlewares
                 {
                     int userId = int.Parse(jwtToken.Claims.First(c => c.Type == securityService.IdClaim).Value);
                     context.Items[currentUserService.CurrentUserContextItem] = userService.GetById(userId);
+                    context.Items[currentUserService.PermissionsContextItem] = roleService.GetByUser(userId);
                 }
             }
 

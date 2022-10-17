@@ -45,7 +45,15 @@ namespace Concrete.Services
             }
             else
             {
-                return Util.Converters.Convert(user);
+                Data.Models.Role? role = _db.Roles
+                    .SingleOrDefault(r => r.Id == user.RoleId);
+
+                if (role == null)
+                {
+                    return null;
+                }
+
+                return Util.Converters.Convert(user, role);
             }
         }
 
@@ -74,6 +82,9 @@ namespace Concrete.Services
                 throw new Exceptions.FailedLoginException();
             }
 
+            Data.Models.Role? role = _db.Roles
+                .SingleOrDefault(r => r.Id == user.RoleId);
+
             Hash hash = new()
             {
                 Salt = user.PasswordSalt,
@@ -82,7 +93,7 @@ namespace Concrete.Services
 
             if (_securityService.Verify(hash, password))
             {
-                User userModel = Util.Converters.Convert(user);
+                User userModel = Util.Converters.Convert(user, role!);
                 _currentUserService.SaveAccessToken(_securityService.GenerateJwtToken(userModel, TimeSpan.FromHours(_cookieSettings.AccessTokenValidityHours)));
 
                 if (rememberLogin)
@@ -152,18 +163,26 @@ namespace Concrete.Services
             {
                 throw new Exceptions.InvalidModelException()
                 {
-                    ErrorKey = Exceptions.ErrorKeys.Keys.CannotCreateUser
+                    ErrorKey = Exceptions.ErrorKeys.Keys.CannotCreateUser,
                 };
             }
             if (_db.Users.Any(u => u.Username.ToLower() == user.Username.ToLower()))
             {
                 throw new Exceptions.UsernameTakenException();
             }
+            if (!_db.Roles.Any(r => r.Id == user.RoleId))
+            {
+                throw new Exceptions.InvalidRoleException
+                {
+                    ErrorKey = Exceptions.ErrorKeys.Keys.CannotCreateUser,
+                };
+            }
 
             Hash hash = _securityService.Hash(user.Password);
             Data.Models.User newUser = new()
             {
                 Username = user.Username,
+                RoleId = user.RoleId,
                 PasswordHash = hash.Key,
                 PasswordSalt = hash.Salt,
             };
@@ -173,7 +192,7 @@ namespace Concrete.Services
             return newUser.Id;
         }
 
-        public void CreateAdminUser()
+        public void CreateAdminUser(int adminRoleId)
         {
             if (!_db.Users.Any())
             {
@@ -181,6 +200,7 @@ namespace Concrete.Services
                 {
                     Username = _generalSettings.AdminUsername,
                     Password = _generalSettings.AdminPassword,
+                    RoleId = adminRoleId,
                 });
             }
         }
@@ -195,8 +215,16 @@ namespace Concrete.Services
 
         public IEnumerable<User> GetUsers()
         {
-            return _db.Users
-                .Select(Util.Converters.Convert);
+            List<Data.Models.User> dbUsers = _db.Users.ToList();
+            List<Data.Models.Role> dbRoles = _db.Roles.ToList();
+
+            return dbUsers
+                .Join(
+                    dbRoles,
+                    l => l.RoleId,
+                    r => r.Id,
+                    (user, role) => Util.Converters.Convert(user, role)
+                );
         }
 
         public void DeleteUser(int id)
@@ -220,6 +248,7 @@ namespace Concrete.Services
             }
 
             _db.Users.Remove(dbUser);
+            _db.RefreshTokens.RemoveRange(_db.RefreshTokens.Where(r => r.UserId == id));
             _db.SaveChanges();
         }
     }

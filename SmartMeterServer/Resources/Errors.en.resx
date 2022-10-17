@@ -132,6 +132,9 @@
   <data name="Messages.InvalidModel" xml:space="preserve">
     <value>The supplied data is incomplete or incorrect</value>
   </data>
+  <data name="Messages.InvalidRole" xml:space="preserve">
+    <value>The given role is invalid</value>
+  </data>
   <data name="Messages.InvalidUsernamePassword" xml:space="preserve">
     <value>The given username and password combination was nog recognized</value>
   </data>

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Rotom.Controllers;
 
 namespace Rotom
 {
@@ -29,6 +30,7 @@ namespace Rotom
             services.AddScoped<Abstract.Services.ISecurityService, Concrete.Services.SecurityService>();
             services.AddScoped<Abstract.Services.IUserService, Concrete.Services.UserService>();
             services.AddScoped<Abstract.Services.ICurrentUserService, Services.CurrentUserService>();
+            services.AddScoped<Abstract.Services.IRoleService, Concrete.Services.RoleService>();
 
             services.Configure<Settings.DatabaseSettings>(Configuration.GetSection(DATABASE_SETTINGS_KEY));
             services.Configure<Abstract.Settings.JwtSettings>(Configuration.GetSection(JWT_SETTINGS_KEY));
@@ -71,21 +73,20 @@ namespace Rotom
             using var serviceScope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope();
+            var roleService = serviceScope.ServiceProvider.GetService<Abstract.Services.IRoleService>();
             var userService = serviceScope.ServiceProvider.GetService<Abstract.Services.IUserService>();
-            userService.CreateAdminUser();
+
+            int adminRole = roleService.SeedRoles();
+
+            userService.CreateAdminUser(adminRole);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseExceptionHandler(HomeController.Actions.Error);
                 app.UseHsts();
             }
 

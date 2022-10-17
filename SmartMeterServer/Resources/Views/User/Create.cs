@@ -7,5 +7,6 @@
         public const string Username = "Username";
         public const string Password = "Password";
         public const string Cancel = "Cancel";
+        public const string Role = "Role";
     }
 }

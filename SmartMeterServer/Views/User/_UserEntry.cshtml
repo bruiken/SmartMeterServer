@@ -5,7 +5,8 @@
         @Model.Id
     </div>
     <div class="col my-auto">
-        @Model.Username        
+        @Model.Username
+        <span class="badge rounded-pill bg-primary">@Model.RoleName</span>
     </div>
     <div class="col-auto">
         <a href="@Url.Action(Controllers.UserController.Actions.DeleteUser, Controllers.UserController.Name, new { id = Model.Id })" class="btn btn-danger float-end"><i class="fa-solid fa-trash"></i></a>

@@ -15,6 +15,7 @@ namespace Rotom.Services
         }
 
         public string CurrentUserContextItem => "User";
+        public string PermissionsContextItem => "Permissions";
 
         public bool IsLoggedIn => GetCurrentUser() != null;
 

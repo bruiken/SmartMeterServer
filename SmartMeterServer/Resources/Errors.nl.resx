@@ -132,6 +132,9 @@
   <data name="Messages.InvalidModel" xml:space="preserve">
     <value>De ingevulde gegevens zijn incompleet of incorrect</value>
   </data>
+  <data name="Messages.InvalidRole" xml:space="preserve">
+    <value>De gegeven rol is niet bruikbaar</value>
+  </data>
   <data name="Messages.InvalidUsernamePassword" xml:space="preserve">
     <value>De gegeven combinatie van gebruikersnaam en wachtwoord werd niet herkend</value>
   </data>

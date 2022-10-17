@@ -16,6 +16,7 @@
             public const string UsernameIsTaken = "Messages.UsernameIsTaken";
             public const string CannotDeleteOwnUser = "Messages.CannotDeleteOwnUser";
             public const string UserDoesNotExist = "Messages.UserDoesNotExist";
+            public const string InvalidRole = "Messages.InvalidRole";
         }
     }
 }

@@ -129,6 +129,9 @@
   <data name="Password" xml:space="preserve">
     <value>Wachtwoord</value>
   </data>
+  <data name="Role" xml:space="preserve">
+    <value>Rol</value>
+  </data>
   <data name="Username" xml:space="preserve">
     <value>Gebruikersnaam</value>
   </data>

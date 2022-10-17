@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Abstract.Models;
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Rotom.Controllers
 {
-    [Attributes.AuthenticationFilter]
+    [Attributes.AuthenticationFilter(Permission = EPermission.CanModifyUsers)]
     [Route("User")]
     public class UserController : Controller
     {
@@ -15,10 +17,12 @@ namespace Rotom.Controllers
         }
 
         private readonly Abstract.Services.IUserService _userService;
+        private readonly Abstract.Services.IRoleService _roleService;
 
-        public UserController(Abstract.Services.IUserService userService)
+        public UserController(Abstract.Services.IUserService userService, Abstract.Services.IRoleService roleService)
         {
             _userService = userService;
+            _roleService = roleService;
         }
        
         [HttpGet]
@@ -38,7 +42,13 @@ namespace Rotom.Controllers
         [Route("Create")]
         public IActionResult Create()
         {
-            return View();
+            var roles = _roleService.GetRoles();
+            Models.CreateUserModel model = new()
+            {
+                AvailableRoles = roles.Select(Util.Converters.Convert).ToList(),
+            };
+
+            return View(model);
         }
 
         [HttpPost]

@@ -15,10 +15,12 @@ namespace Rotom.Controllers
         }
 
         private readonly Abstract.Services.IUserService _userService;
+        private readonly Abstract.Services.ICurrentUserService _currentUserService;
 
-        public AuthenticationController(Abstract.Services.IUserService userService)
+        public AuthenticationController(Abstract.Services.IUserService userService, Abstract.Services.ICurrentUserService currentUserService)
         {
             _userService = userService;
+            _currentUserService = currentUserService;
         }
 
         private IActionResult RedirectAfterLogin(string redirectTo = "")
@@ -40,7 +42,7 @@ namespace Rotom.Controllers
         [Route("")]
         public IActionResult Index([FromQuery] string redirectTo = "")
         {
-            if (_userService.TryLoginWithRefreshToken())
+            if (_currentUserService.IsLoggedIn || _userService.TryLoginWithRefreshToken())
             {
                 return RedirectAfterLogin(redirectTo);
             }

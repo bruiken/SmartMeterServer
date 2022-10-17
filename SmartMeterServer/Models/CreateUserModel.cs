@@ -9,5 +9,9 @@ namespace Rotom.Models
 
         [Required]
         public string Password { get; set; }
+
+        public int RoleId { get; set; }
+
+        public List<RoleModel> AvailableRoles { get; set; }
     }
 }

@@ -12,7 +12,7 @@
 
         int CreateUser(Models.CreateUser user);
 
-        void CreateAdminUser();
+        void CreateAdminUser(int adminRoleId);
 
         IEnumerable<Models.User> GetUsers();
 
