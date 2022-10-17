@@ -184,5 +184,13 @@ namespace Concrete.Services
                 });
             }
         }
+
+        public void Logout()
+        {
+            if (_currentUserService.IsLoggedIn)
+            {
+                _currentUserService.ClearTokenCookies();
+            }
+        }
     }
 }

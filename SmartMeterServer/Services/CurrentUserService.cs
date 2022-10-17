@@ -16,6 +16,8 @@ namespace Rotom.Services
 
         public string CurrentUserContextItem => "User";
 
+        public bool IsLoggedIn => GetCurrentUser() != null;
+
         public User? GetCurrentUser()
         {
             return _httpContextAccessor.HttpContext.Items[CurrentUserContextItem] as User;

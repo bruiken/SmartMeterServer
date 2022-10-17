@@ -8,6 +8,8 @@
 
         void Login(string username, string password, bool rememberLogin);
 
+        void Logout();
+
         int CreateUser(Models.CreateUser user);
 
         void CreateAdminUser();

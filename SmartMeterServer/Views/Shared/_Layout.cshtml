@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Abstract.Services.ICurrentUserService _currentUserService;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,7 +22,11 @@
                 @RenderBody()
             </main> 
             <footer class="footer text-muted flex-shrink-1 py-3">
-                &copy; @System.DateTime.UtcNow.Year - Rotom 
+                &copy; @System.DateTime.UtcNow.Year - Rotom
+                @if (_currentUserService.IsLoggedIn)
+                {
+                    @("-") <a href="@Url.Action(Controllers.AuthenticationController.Actions.Logout, Controllers.AuthenticationController.Name)">Logout</a>
+                }
             </footer>
         </div>
     </div>

@@ -13,5 +13,7 @@
         void SaveRefreshToken(string token);
 
         void ClearTokenCookies();
+
+        bool IsLoggedIn { get; }
     }
 }

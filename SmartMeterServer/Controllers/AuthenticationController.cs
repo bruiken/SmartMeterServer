@@ -11,6 +11,7 @@ namespace Rotom.Controllers
         {
             public const string Index = "Index";
             public const string SubmitLogin = "SubmitLogin";
+            public const string Logout = "Logout";
         }
 
         private readonly Abstract.Services.IUserService _userService;
@@ -25,8 +26,8 @@ namespace Rotom.Controllers
             if (string.IsNullOrWhiteSpace(redirectTo))
             {
                 return RedirectToAction(
-                    HomeController.Name,
-                    HomeController.Actions.Index
+                    HomeController.Actions.Index,
+                    HomeController.Name
                 );
             }
             else
@@ -58,6 +59,14 @@ namespace Rotom.Controllers
         {
             _userService.Login(model.Username, model.Password, model.RememberMe);
             return RedirectAfterLogin(model.RedirectTo);
+        }
+
+        [HttpGet]
+        [Route("Logout")]
+        public IActionResult Logout()
+        {
+            _userService.Logout();
+            return RedirectToAction(Actions.Index, Name);
         }
     }
 }
