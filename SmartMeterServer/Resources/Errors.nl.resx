@@ -120,14 +120,23 @@
   <data name="Keys.CannotCreateUser" xml:space="preserve">
     <value>Fout bij aanmaken gebruiker</value>
   </data>
+  <data name="Keys.CannotDeleteUser" xml:space="preserve">
+    <value>Kan gebruiker niet verwijderen</value>
+  </data>
   <data name="Keys.CannotLogin" xml:space="preserve">
     <value>Inloggen mislukt</value>
+  </data>
+  <data name="Messages.CannotDeleteOwnUser" xml:space="preserve">
+    <value>Kan eigen gebruiker niet verwijderen</value>
   </data>
   <data name="Messages.InvalidModel" xml:space="preserve">
     <value>De ingevulde gegevens zijn incompleet of incorrect</value>
   </data>
   <data name="Messages.InvalidUsernamePassword" xml:space="preserve">
     <value>De gegeven combinatie van gebruikersnaam en wachtwoord werd niet herkend</value>
+  </data>
+  <data name="Messages.UserDoesNotExist" xml:space="preserve">
+    <value>De gegeven gebruiker bestaat niet</value>
   </data>
   <data name="Messages.UsernameIsTaken" xml:space="preserve">
     <value>De ingevulde gebruikersnaam is al in gebruik</value>

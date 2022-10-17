@@ -13,5 +13,9 @@
         int CreateUser(Models.CreateUser user);
 
         void CreateAdminUser();
+
+        IEnumerable<Models.User> GetUsers();
+
+        void DeleteUser(int id);
     }
 }

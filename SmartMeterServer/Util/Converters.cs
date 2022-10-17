@@ -11,5 +11,13 @@
             };
         }
 
+        public static Models.UserModel Convert(Abstract.Models.User model)
+        {
+            return new Models.UserModel
+            {
+                Id = model.Id,
+                Username = model.Username,
+            };
+        }
     }
 }

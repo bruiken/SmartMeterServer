@@ -41,6 +41,7 @@ namespace Rotom
             services.AddMvc(options =>
             {
                 options.Filters.Add<Attributes.SmartMeterExceptionHandlingFilterAttribute>();
+                options.Filters.Add<Attributes.AttachErrorFilterAttribute>();
             })
                 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();

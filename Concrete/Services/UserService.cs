@@ -192,5 +192,35 @@ namespace Concrete.Services
                 _currentUserService.ClearTokenCookies();
             }
         }
+
+        public IEnumerable<User> GetUsers()
+        {
+            return _db.Users
+                .Select(Util.Converters.Convert);
+        }
+
+        public void DeleteUser(int id)
+        {
+            int currentUserId = _currentUserService.GetCurrentUser()!.Id;
+            if (currentUserId == id)
+            {
+                throw new Exceptions.CannotDeleteUserException
+                {
+                    MessageKey = Exceptions.ErrorKeys.Messages.CannotDeleteOwnUser,
+                };
+            }
+
+            Data.Models.User? dbUser = _db.Users.SingleOrDefault(u => u.Id == id);
+            if (dbUser == null)
+            {
+                throw new Exceptions.CannotDeleteUserException
+                {
+                    MessageKey = Exceptions.ErrorKeys.Messages.UserDoesNotExist,
+                };
+            }
+
+            _db.Users.Remove(dbUser);
+            _db.SaveChanges();
+        }
     }
 }

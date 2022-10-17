@@ -1,0 +1,27 @@
+﻿@model ViewUsersModel
+
+@inject IViewLocalizer _localizer;
+
+@{
+    ViewData["Title"] = _localizer[Resources.Views.User.Index.Users];
+}
+
+<h2>@_localizer[Resources.Views.User.Index.AllUsers]</h2>
+
+<div class="py-2">
+    <a href="@Url.Action(Controllers.HomeController.Actions.Index, Controllers.HomeController.Name)" class="btn btn-secondary"><i class="fa-solid fa-circle-chevron-left"></i> @_localizer[Resources.Views.User.Index.Back]</a>
+    <a href="@Url.Action(Controllers.UserController.Actions.Create, Controllers.UserController.Name)" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i> @_localizer[Resources.Views.User.Index.CreateUser]</a>
+</div>
+
+<div class="row bg-dark py-3 fw-bold">
+    <div class="col-2">
+        @_localizer[Resources.Views.User.Index.Id]
+    </div>
+    <div class="col">
+        @_localizer[Resources.Views.User.Index.Username]
+    </div>
+</div>
+@foreach (UserModel user in Model.Users)
+{
+    @await Html.PartialAsync("_UserEntry", user)
+}
