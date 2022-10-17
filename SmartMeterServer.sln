@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rotom", "SmartMeterServer\Rotom.csproj", "{18C74141-8699-4856-96EF-6DE26B6F8AFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rotom", "Rotom\Rotom.csproj", "{18C74141-8699-4856-96EF-6DE26B6F8AFB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{526B51CD-7436-459A-ADFD-EA114858C851}"
 EndProject
