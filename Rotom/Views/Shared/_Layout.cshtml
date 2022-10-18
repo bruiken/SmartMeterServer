@@ -1,5 +1,7 @@
 ﻿@inject Abstract.Services.ICurrentUserService _currentUserService;
 
+@inject IViewLocalizer _localizer;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +29,19 @@
                 &copy; @System.DateTime.UtcNow.Year - Rotom
                 @if (_currentUserService.IsLoggedIn)
                 {
-                    @("-") <a href="@Url.Action(Controllers.AuthenticationController.Actions.Logout, Controllers.AuthenticationController.Name)">Logout</a>
+                    @("-") <a href="@Url.Action(Controllers.AuthenticationController.Actions.Logout, Controllers.AuthenticationController.Name)">@_localizer[Resources.Views.Shared._Layout.Logout]</a>
+                }
+                @if (_currentUserService.UserIsAllowed(Abstract.Models.EPermission.CanModifyUsers))
+                {
+                    @("-") <a href="@Url.Action(Controllers.UserController.Actions.Index, Controllers.UserController.Name)">@_localizer[Resources.Views.Shared._Layout.ManageUsers]</a>
+                }
+                @if (_currentUserService.UserIsAllowed(Abstract.Models.EPermission.CanModifySettings))
+                {
+                    @("-") <a href="@Url.Action(Controllers.SettingController.Actions.Index, Controllers.SettingController.Name)">@_localizer[Resources.Views.Shared._Layout.ManageSettings]</a>
+                }
+                @if (_currentUserService.UserIsAllowed(Abstract.Models.EPermission.CanModifyInstallations))
+                {
+                    @("-") <a href="@Url.Action(Controllers.InstallationController.Actions.Index, Controllers.InstallationController.Name)">@_localizer[Resources.Views.Shared._Layout.ManageInstallations]</a>
                 }
             </footer>
         </div>

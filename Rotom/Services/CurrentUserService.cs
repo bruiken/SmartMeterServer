@@ -6,12 +6,14 @@ namespace Rotom.Services
     public class CurrentUserService : Abstract.Services.ICurrentUserService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly Abstract.Services.IRoleService _roleService;
         private readonly Settings.CookieSettings _cookieSettings;
 
-        public CurrentUserService(IHttpContextAccessor httpContextAccessor, IOptions<Settings.CookieSettings> options)
+        public CurrentUserService(IHttpContextAccessor httpContextAccessor, IOptions<Settings.CookieSettings> options, Abstract.Services.IRoleService roleService)
         {
             _httpContextAccessor = httpContextAccessor;
             _cookieSettings = options.Value;
+            _roleService = roleService;
         }
 
         public string CurrentUserContextItem => "User";
@@ -63,6 +65,19 @@ namespace Rotom.Services
         public string? GetRefreshTokenCookie()
         {
             return _httpContextAccessor.HttpContext.Request.Cookies[_cookieSettings.RefreshToken];
+        }
+
+        public bool UserIsAllowed(EPermission permission)
+        {
+            Role? role = _httpContextAccessor.HttpContext.Items[PermissionsContextItem] as Role;
+            if (role == null)
+            {
+                return false;
+            }
+            else
+            {
+                return _roleService.RoleIsAllowedPermission(role, permission);
+            }
         }
     }
 }

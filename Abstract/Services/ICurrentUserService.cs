@@ -16,5 +16,7 @@
         void ClearTokenCookies();
 
         bool IsLoggedIn { get; }
+
+        bool UserIsAllowed(Models.EPermission permission);
     }
 }
