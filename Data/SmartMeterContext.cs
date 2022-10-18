@@ -13,6 +13,9 @@ namespace Data
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Installation> Installations { get; set; }
+        public DbSet<InstallationAccess> InstallationsAccesses { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,6 +23,9 @@ namespace Data
             RefreshTokenMeta.OnModelCreating(modelBuilder);
             RoleMeta.OnModelCreating(modelBuilder);
             PermissionMeta.OnModelCreating(modelBuilder);
+            InstallationMeta.OnModelCreating(modelBuilder);
+            InstallationAccessMeta.OnModelCreating(modelBuilder);
+            SettingMeta.OnModelCreating(modelBuilder);
         }
     }
 }

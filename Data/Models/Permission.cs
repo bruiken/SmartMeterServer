@@ -7,6 +7,7 @@ namespace Data.Models
         public int RoleId { get; set; }
 
         public bool CanModifyUsers { get; set; }
+        public bool CanModifySettings { get; set; }
     }
 
     static class PermissionMeta
