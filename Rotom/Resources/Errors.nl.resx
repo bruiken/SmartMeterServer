@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Keys.CannotCreateInstallation" xml:space="preserve">
+    <value>Fout bij aanmaken installatie</value>
+  </data>
   <data name="Keys.CannotCreateUser" xml:space="preserve">
     <value>Fout bij aanmaken gebruiker</value>
+  </data>
+  <data name="Keys.CannotDeleteInstallation" xml:space="preserve">
+    <value>Fout bij verwijderen installatie</value>
   </data>
   <data name="Keys.CannotDeleteUser" xml:space="preserve">
     <value>Kan gebruiker niet verwijderen</value>
@@ -134,6 +140,21 @@
   </data>
   <data name="Messages.HostnameMustNotBeEmpty" xml:space="preserve">
     <value>De gegeven waarde voor hostnaam is leeg</value>
+  </data>
+  <data name="Messages.InstallationDoesNotExist" xml:space="preserve">
+    <value>De gegeven installatie bestaat niet</value>
+  </data>
+  <data name="Messages.InvalidInstallationAccessUserId" xml:space="preserve">
+    <value>Een van de gebruikers die toegang moet krijgen bestaat niet</value>
+  </data>
+  <data name="Messages.InvalidInstallationLocationId" xml:space="preserve">
+    <value>De locatie id van de installatie mag niet leeg zijn en moet uniek zijn</value>
+  </data>
+  <data name="Messages.InvalidInstallationName" xml:space="preserve">
+    <value>De naam van de installatie mag niet leeg zijn en moet uniek zijn</value>
+  </data>
+  <data name="Messages.InvalidInstallationRabbitMQSettings" xml:space="preserve">
+    <value>De RabbitMQ instellingen mogen niet leeg zijn</value>
   </data>
   <data name="Messages.InvalidModel" xml:space="preserve">
     <value>De ingevulde gegevens zijn incompleet of incorrect</value>

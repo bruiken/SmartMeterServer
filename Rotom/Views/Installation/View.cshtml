@@ -1,0 +1,66 @@
+﻿@model InstallationModel
+
+@inject IViewLocalizer _localizer;
+
+@{
+    ViewData["Title"] = _localizer[Resources.Views.Installation.View.ViewInstallation, Model.Name];
+}
+
+<div class="row justify-content-center">
+    <div class="col col-sm-7 col-md-6 col-lg-5">
+        <div class="row">
+            <div class="col">
+                <h2>@_localizer[Resources.Views.Installation.View.Installation, Model.Name]</h2>
+            </div>
+        </div>
+        <div class="row pt-1 pb-3">
+            <div class="col">
+                <a href="@Url.Action(Controllers.InstallationController.Actions.Index, Controllers.InstallationController.Name)" class="btn btn-secondary">@_localizer[Resources.Views.Installation.View.Back]</a>
+                <a href="@Url.Action(Controllers.InstallationController.Actions.Update, Controllers.InstallationController.Name, new { id = Model.Id })" class="btn btn-primary">@_localizer[Resources.Views.Installation.View.Edit]</a>
+                <a href="@Url.Action(Controllers.InstallationController.Actions.Delete, Controllers.InstallationController.Name, new { id = Model.Id })" class="btn btn-danger float-end">@_localizer[Resources.Views.Installation.View.Delete]</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="fw-bold">@_localizer[Resources.Views.Installation.View.LocationId]</span>
+                <span class="float-end">@Model.LocationId</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="fw-bold">@_localizer[Resources.Views.Installation.View.Name]</span>
+                <span class="float-end">@Model.Name</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="fw-bold">@_localizer[Resources.Views.Installation.View.RabbitMQUsername]</span>
+                <span class="float-end">@Model.RabbitMQUsername</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="fw-bold">@_localizer[Resources.Views.Installation.View.RabbitMQPassword]</span>
+                <span class="float-end">@Model.RabbitMQPassword</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="fw-bold">@_localizer[Resources.Views.Installation.View.RabbitMQExchange]</span>
+                <span class="float-end">@Model.RabbitMQExchange</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="fw-bold">@_localizer[Resources.Views.Installation.View.RabbitMQVHost]</span>
+                <span class="float-end">@Model.RabbitMQVHost</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="fw-bold">@_localizer[Resources.Views.Installation.View.UsersWithAccess]</span>
+                <span class="float-end">@string.Join(", ", Model.InstallationAccesses.Select(a => a.Username))</span>
+            </div>
+        </div>
+    </div>
+</div>

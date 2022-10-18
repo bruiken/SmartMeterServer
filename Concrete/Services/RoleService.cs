@@ -62,6 +62,7 @@ namespace Concrete.Services
             {
                 EPermission.CanModifyUsers => role.Permissions.CanModifyUsers,
                 EPermission.CanModifySettings => role.Permissions.CanModifySettings,
+                EPermission.CanModifyInstallations => role.Permissions.CanModifyInstallations,
                 _ => false,
             };
         }
@@ -88,12 +89,14 @@ namespace Concrete.Services
                     RoleId = adminRole.Id,
                     CanModifyUsers = true,
                     CanModifySettings = true,
+                    CanModifyInstallations = true,
                 });
                 _db.Permissions.Add(new Data.Models.Permission
                 {
                     RoleId = userRole.Id,
                     CanModifyUsers = false,
                     CanModifySettings = false,
+                    CanModifyInstallations = false,
                 });
                 _db.SaveChanges();
 

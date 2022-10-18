@@ -1,0 +1,125 @@
+﻿@model CreateInstallationModel
+
+@inject IViewLocalizer _localizer
+
+@{
+    if (Model.Id == 0)
+    {
+        ViewData["Title"] = _localizer[Resources.Views.Installation.Create.CreateInstallation];
+    }
+    else
+    {
+        ViewData["Title"] = _localizer[Resources.Views.Installation.Create.UpdateInstallation, Model.Name];
+    }
+}
+@{
+    string targetAction = Controllers.InstallationController.Actions.Create;
+    if (Model.Id != 0)
+    {
+        targetAction = Controllers.InstallationController.Actions.Update;
+    }
+}
+@using (Html.BeginForm(targetAction, Controllers.InstallationController.Name, FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="row justify-content-center">
+        <div class="col col-sm-7 col-md-6 col-lg-5">
+            <div class="row">
+                <div class="col">
+                    <h2>@_localizer[Resources.Views.Installation.Create.CreateInstallation]</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @_localizer[Resources.Views.Installation.Create.LocationId]
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @Html.TextBoxFor(m => m.LocationId, new { @class = "form-control", required = "required" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @_localizer[Resources.Views.Installation.Create.Name]
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", required = "required" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @_localizer[Resources.Views.Installation.Create.RabbitMQUsername]
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @Html.TextBoxFor(m => m.RabbitMQUsername, new { @class = "form-control", required = "required" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @_localizer[Resources.Views.Installation.Create.RabbitMQPassword]
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @Html.TextBoxFor(m => m.RabbitMQPassword, new { @class = "form-control", required = "required" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @_localizer[Resources.Views.Installation.Create.RabbitMQExchange]
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @Html.TextBoxFor(m => m.RabbitMQExchange, new { @class = "form-control", required = "required" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @_localizer[Resources.Views.Installation.Create.RabbitMQVHost]
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @Html.TextBoxFor(m => m.RabbitMQVHost, new { @class = "form-control", required = "required" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @_localizer[Resources.Views.Installation.Create.UsersWithAccess]
+                </div>
+            </div>
+            @for (int i=0; i<Model.InstallationAccesses.Count; i++)
+            {
+                @Html.HiddenFor(m => m.InstallationAccesses[i].UserId)
+                @Html.HiddenFor(m => m.InstallationAccesses[i].Username)
+                <div class="row">
+                    <div class="col">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.InstallationAccesses[i].Selected, new { @class = "form-check-input"})
+                            @Html.LabelFor(m => m.InstallationAccesses[i].Selected, Model.InstallationAccesses[i].Username, new { @class = "form-check-label" })
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row pt-2">
+                <div class="col">
+                    @if (Model.Id == 0)
+                    {
+                        <input class="btn btn-primary" type="submit" value="@_localizer[Resources.Views.Installation.Create._Create]" />
+                    }
+                    else
+                    {
+                        <input class="btn btn-primary" type="submit" value="@_localizer[Resources.Views.Installation.Create.Update]" />
+                    }
+                    <a href="@Url.Action(Controllers.InstallationController.Actions.Index, Controllers.InstallationController.Name)" class="btn btn-secondary">@_localizer[Resources.Views.Installation.Create.Cancel]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

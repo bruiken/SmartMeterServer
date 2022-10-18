@@ -17,8 +17,11 @@
     <div class="col-2">
         @_localizer[Resources.Views.User.Index.Id]
     </div>
-    <div class="col">
+    <div class="col-4">
         @_localizer[Resources.Views.User.Index.Username]
+    </div>
+    <div class="col">
+        @_localizer[Resources.Views.User.Index.AccessibleInstallations]
     </div>
 </div>
 @foreach (UserModel user in Model.Users)

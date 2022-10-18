@@ -29,6 +29,7 @@
             {
                 CanModifyUsers = permissions.CanModifyUsers,
                 CanModifySettings = permissions.CanModifySettings,
+                CanModifyInstallations = permissions.CanModifyInstallations,
             };
         }
 
@@ -38,6 +39,34 @@
             {
                 RabbitMQHostname = settings.SingleOrDefault(s => s.Key == Data.Models.SettingKey.RabbitMQHostname)?.Value ?? string.Empty,
                 RabbitMQPort = settings.SingleOrDefault(s => s.Key == Data.Models.SettingKey.RabbitMQPort)?.Value ?? string.Empty,
+            };
+        }
+
+        public static Data.Models.Installation Convert(Abstract.Models.Installation installation)
+        {
+            return new Data.Models.Installation
+            {
+                Id = installation.Id,
+                LocationId = installation.LocationId,
+                Name = installation.Name,
+                RabbitMQUsername = installation.RabbitMQUsername,
+                RabbitMQPassword = installation.RabbitMQPassword,
+                RabbitMQExchange = installation.RabbitMQExchange,
+                RabbitMQVHost = installation.RabbitMQVHost,
+            };
+        }
+
+        public static Abstract.Models.Installation Convert(Data.Models.Installation installation)
+        {
+            return new Abstract.Models.Installation
+            {
+                Id = installation.Id,
+                LocationId = installation.LocationId,
+                Name = installation.Name,
+                RabbitMQUsername = installation.RabbitMQUsername,
+                RabbitMQPassword = installation.RabbitMQPassword,
+                RabbitMQExchange = installation.RabbitMQExchange,
+                RabbitMQVHost = installation.RabbitMQVHost,
             };
         }
     }

@@ -1,0 +1,17 @@
+﻿@model InstallationModel
+
+<div class="row border-bottom py-2">
+    <div class="col-2 my-auto">
+        @Model.Id
+    </div>
+    <div class="col-3 my-auto">
+        @Model.Name
+    </div>
+    <div class="col-3 my-auto">
+        @Model.LocationId
+    </div>
+    <div class="col d-flex">
+        <span class="align-self-center">@Model.InstallationAccesses.Count()</span>
+        <a href="@Url.Action(Controllers.InstallationController.Actions.View, Controllers.InstallationController.Name, new { id = Model.Id })" class="btn btn-primary ms-auto"><i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
+</div>

@@ -18,20 +18,29 @@ namespace Rotom.Controllers
 
         private readonly Abstract.Services.IUserService _userService;
         private readonly Abstract.Services.IRoleService _roleService;
+        private readonly Abstract.Services.IInstallationService _installationService;
 
-        public UserController(Abstract.Services.IUserService userService, Abstract.Services.IRoleService roleService)
+        public UserController(Abstract.Services.IUserService userService, Abstract.Services.IRoleService roleService, Abstract.Services.IInstallationService installationService)
         {
             _userService = userService;
             _roleService = roleService;
+            _installationService = installationService;
         }
-       
+
         [HttpGet]
         [Route("")]
         public IActionResult Index()
         {
             var users = _userService
                 .GetUsers()
-                .Select(Util.Converters.Convert);
+                .Select(u => 
+                {
+                    Models.UserModel model = Util.Converters.Convert(u);
+                    model.AccessibleInstallations = _installationService
+                        .GetUserInstallations(u.Id)
+                        .Select(i => i.Name);
+                    return model;
+                });
             return View(new Models.ViewUsersModel
             {
                 Users = users,

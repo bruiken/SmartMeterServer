@@ -32,6 +32,7 @@ namespace Rotom
             services.AddScoped<Abstract.Services.ICurrentUserService, Services.CurrentUserService>();
             services.AddScoped<Abstract.Services.IRoleService, Concrete.Services.RoleService>();
             services.AddScoped<Abstract.Services.ISettingsService, Concrete.Services.SettingsService>();
+            services.AddScoped<Abstract.Services.IInstallationService, Concrete.Services.InstallationService>();
 
             services.Configure<Settings.DatabaseSettings>(Configuration.GetSection(DATABASE_SETTINGS_KEY));
             services.Configure<Abstract.Settings.JwtSettings>(Configuration.GetSection(JWT_SETTINGS_KEY));
@@ -89,6 +90,10 @@ namespace Rotom
             {
                 app.UseExceptionHandler(HomeController.Actions.Error);
                 app.UseHsts();
+            }
+            else
+            {
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions

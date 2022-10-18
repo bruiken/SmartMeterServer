@@ -9,5 +9,7 @@
         public string RoleName { get; set; }
 
         public int RoleId { get; set; }
+
+        public IEnumerable<string> AccessibleInstallations { get; set; }
     }
 }

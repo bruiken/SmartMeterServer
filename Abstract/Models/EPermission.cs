@@ -4,5 +4,6 @@
     {
         CanModifyUsers,
         CanModifySettings,
+        CanModifyInstallations,
     }
 }

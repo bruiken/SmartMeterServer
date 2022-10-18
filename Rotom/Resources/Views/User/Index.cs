@@ -8,5 +8,6 @@
         public const string CreateUser = "CreateUser";
         public const string Back = "Back";
         public const string AllUsers = "AllUsers";
+        public const string AccessibleInstallations = "AccessibleInstallations";
     }
 }

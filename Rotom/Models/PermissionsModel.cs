@@ -4,5 +4,6 @@
     {
         public bool CanModifyUsers { get; set; }
         public bool CanModifySettings { get; set; }
+        public bool CanModifyInstallations { get; set; }
     }
 }
