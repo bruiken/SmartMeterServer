@@ -3,5 +3,6 @@
     public enum EPermission
     {
         CanModifyUsers,
+        CanModifySettings,
     }
 }

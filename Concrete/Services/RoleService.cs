@@ -61,6 +61,7 @@ namespace Concrete.Services
             return permission switch
             {
                 EPermission.CanModifyUsers => role.Permissions.CanModifyUsers,
+                EPermission.CanModifySettings => role.Permissions.CanModifySettings,
                 _ => false,
             };
         }
@@ -86,11 +87,13 @@ namespace Concrete.Services
                 {
                     RoleId = adminRole.Id,
                     CanModifyUsers = true,
+                    CanModifySettings = true,
                 });
                 _db.Permissions.Add(new Data.Models.Permission
                 {
                     RoleId = userRole.Id,
                     CanModifyUsers = false,
+                    CanModifySettings = false,
                 });
                 _db.SaveChanges();
 

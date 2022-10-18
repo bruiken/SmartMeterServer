@@ -28,6 +28,16 @@
             return new Abstract.Models.Permissions
             {
                 CanModifyUsers = permissions.CanModifyUsers,
+                CanModifySettings = permissions.CanModifySettings,
+            };
+        }
+
+        public static Abstract.Models.Settings Convert(IEnumerable<Data.Models.Setting> settings)
+        {
+            return new Abstract.Models.Settings
+            {
+                RabbitMQHostname = settings.SingleOrDefault(s => s.Key == Data.Models.SettingKey.RabbitMQHostname)?.Value ?? string.Empty,
+                RabbitMQPort = settings.SingleOrDefault(s => s.Key == Data.Models.SettingKey.RabbitMQPort)?.Value ?? string.Empty,
             };
         }
     }

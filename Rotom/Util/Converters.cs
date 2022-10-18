@@ -38,6 +38,25 @@
             return new Models.PermissionsModel
             {
                 CanModifyUsers = model.CanModifyUsers,
+                CanModifySettings = model.CanModifySettings,
+            };
+        }
+
+        public static Models.SettingsModel Convert(Abstract.Models.Settings model)
+        {
+            return new Models.SettingsModel
+            {
+                RabbitMQHostname = model.RabbitMQHostname,
+                RabbitMQPort = model.RabbitMQPort,
+            };
+        }
+
+        public static Abstract.Models.Settings Convert(Models.SettingsModel model)
+        {
+            return new Abstract.Models.Settings
+            {
+                RabbitMQHostname = model.RabbitMQHostname,
+                RabbitMQPort = model.RabbitMQPort,
             };
         }
     }

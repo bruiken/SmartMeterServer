@@ -117,40 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Keys.CannotCreateUser" xml:space="preserve">
-    <value>Fout bij aanmaken gebruiker</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Keys.CannotDeleteUser" xml:space="preserve">
-    <value>Kan gebruiker niet verwijderen</value>
+  <data name="ChangeSettings" xml:space="preserve">
+    <value>Change settings</value>
   </data>
-  <data name="Keys.CannotLogin" xml:space="preserve">
-    <value>Inloggen mislukt</value>
+  <data name="RabbitMQHostname" xml:space="preserve">
+    <value>RabbitMQ hostname</value>
   </data>
-  <data name="Keys.CannotSaveSettings" xml:space="preserve">
-    <value>Fout bij opslaan instellingen</value>
+  <data name="RabbitMQPort" xml:space="preserve">
+    <value>RabbitMQ port</value>
   </data>
-  <data name="Messages.CannotDeleteOwnUser" xml:space="preserve">
-    <value>Kan eigen gebruiker niet verwijderen</value>
+  <data name="SaveSettings" xml:space="preserve">
+    <value>Save settings</value>
   </data>
-  <data name="Messages.HostnameMustNotBeEmpty" xml:space="preserve">
-    <value>De gegeven waarde voor hostnaam is leeg</value>
-  </data>
-  <data name="Messages.InvalidModel" xml:space="preserve">
-    <value>De ingevulde gegevens zijn incompleet of incorrect</value>
-  </data>
-  <data name="Messages.InvalidRole" xml:space="preserve">
-    <value>De gegeven rol is niet bruikbaar</value>
-  </data>
-  <data name="Messages.InvalidUsernamePassword" xml:space="preserve">
-    <value>De gegeven combinatie van gebruikersnaam en wachtwoord werd niet herkend</value>
-  </data>
-  <data name="Messages.PortMustBeValid" xml:space="preserve">
-    <value>De gegeven waarde voor port is niet geldig</value>
-  </data>
-  <data name="Messages.UserDoesNotExist" xml:space="preserve">
-    <value>De gegeven gebruiker bestaat niet</value>
-  </data>
-  <data name="Messages.UsernameIsTaken" xml:space="preserve">
-    <value>De ingevulde gebruikersnaam is al in gebruik</value>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
   </data>
 </root>

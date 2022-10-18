@@ -126,8 +126,14 @@
   <data name="Keys.CannotLogin" xml:space="preserve">
     <value>Login failed</value>
   </data>
+  <data name="Keys.CannotSaveSettings" xml:space="preserve">
+    <value>Error when saving settings</value>
+  </data>
   <data name="Messages.CannotDeleteOwnUser" xml:space="preserve">
     <value>You cannot remove your own user</value>
+  </data>
+  <data name="Messages.HostnameMustNotBeEmpty" xml:space="preserve">
+    <value>The given value for hostname is invalid (empty?)</value>
   </data>
   <data name="Messages.InvalidModel" xml:space="preserve">
     <value>The supplied data is incomplete or incorrect</value>
@@ -137,6 +143,9 @@
   </data>
   <data name="Messages.InvalidUsernamePassword" xml:space="preserve">
     <value>The given username and password combination was nog recognized</value>
+  </data>
+  <data name="Messages.PortMustBeValid" xml:space="preserve">
+    <value>The given value for port is not a valid port</value>
   </data>
   <data name="Messages.UserDoesNotExist" xml:space="preserve">
     <value>The given user does not exist</value>
