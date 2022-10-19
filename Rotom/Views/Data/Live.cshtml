@@ -1,0 +1,28 @@
+﻿@model IEnumerable<LiveInstallationModel>
+
+@inject IViewLocalizer _localizer;
+
+@{
+    ViewData["Title"] = _localizer[Resources.Views.Data.Live.LiveData];
+}
+
+@if (!Model.Any())
+{
+    <div class="d-flex justify-content-center">
+        <h2>@_localizer[Resources.Views.Data.Live.NoInstallations]</h2>
+    </div>
+}
+
+@foreach (LiveInstallationModel installation in Model)
+{
+    @await Html.PartialAsync("_LiveDataPartial", installation)
+}
+
+@section Scripts
+{
+    @if (Model!.Any())
+    {
+        <script src="~/lib/stomp.js/stomp.min.js" type="text/javascript" asp-append-version="true"></script>
+        <script src="~/js/rabbitmqlistener.js" type="text/javascript" asp-append-version="true"></script>
+    }
+}

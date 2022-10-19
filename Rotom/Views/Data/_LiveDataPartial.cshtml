@@ -1,0 +1,74 @@
+﻿@model LiveInstallationModel
+
+@inject IViewLocalizer _localizer
+
+@{
+    string uniqueId = "_" + System.Guid.NewGuid().ToString().Replace("-", "");
+}
+
+<div class="row justify-content-center pt-4">
+    <div class="col col-md-8 bg-dark bg-opacity-50 pb-1 pt-2 rounded-top">
+        <h2>@Model.Name</h2>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div id="@(uniqueId)-delta-header" class="col col-md-8 position-relative text-center bg-success bg-gradient border-start border-end">
+        <span id="@(uniqueId)-delta-name" class="position-absolute start-0 top-0 pt-1 ps-2">--</span>
+        <h2 class="my-3 fw-bold" id="@(uniqueId)-electricity-delta">-- W</h2>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col col-md-4 position-relative text-center bg-danger border-start border-bottom rounded-0">
+        <span class="position-absolute d-none d-md-block start-0 top-0 pt-1 ps-2">@_localizer[Resources.Views.Data._LiveDataPartial.Using]</span>
+        <h4 class="my-2 fw-bold" id="@(uniqueId)-electricity-usage">-- W</h4>
+    </div>
+    <div class="col col-md-4 position-relative text-center bg-success border-end border-bottom">
+        <span class="position-absolute d-none d-md-block start-0 top-0 pt-1 ps-2">@_localizer[Resources.Views.Data._LiveDataPartial.Generating]</span>
+        <h4 class="my-2 fw-bold" id="@(uniqueId)-electricity-generated">-- W</h4>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(() => {
+        let @(uniqueId)_listener = new RabbitMQListener(
+            "@Model.RabbitMQHostname",
+            "@Model.RabbitMQPort",
+            "@Model.RabbitMQUsername",
+            "@Model.RabbitMQPassword",
+            "@Model.RabbitMQVHost",
+            "@Model.RabbitMQExchange",
+            "@Model.LocationId"
+        );
+
+        var @(uniqueId)_initializing = true;
+        var $@(uniqueId)_currentUsage = $('#@(uniqueId)-electricity-usage');
+        var $@(uniqueId)_currentGenerated = $('#@(uniqueId)-electricity-generated');
+        var $@(uniqueId)_currentDelta = $('#@(uniqueId)-electricity-delta');
+        var $@(uniqueId)_headerDelta = $('#@(uniqueId)-delta-header');
+        var $@(uniqueId)_deltaName = $('#@(uniqueId)-delta-name');
+        var @(uniqueId)_currentlyReceiving = true;
+
+        @(uniqueId)_listener.data_callback = function (data) {
+            $@(uniqueId)_currentUsage.text(`${data.usage_w} W`);
+            $@(uniqueId)_currentGenerated.text(`${data.generated_w} W`);
+            if (data.usage_w > data.generated_w) {
+                $@(uniqueId)_currentDelta.text(`${data.usage_w - data.generated_w} W`);
+                if (@(uniqueId)_initializing || !@(uniqueId)_currentlyReceiving) {
+                    @(uniqueId)_currentlyReceiving = true;
+                    $@(uniqueId)_headerDelta.removeClass('bg-success');
+                    $@(uniqueId)_headerDelta.addClass('bg-danger');
+                    $@(uniqueId)_deltaName.text('@_localizer[Resources.Views.Data._LiveDataPartial.Receiving]');
+                }
+            } else {
+                $@(uniqueId)_currentDelta.text(`${data.generated_w - data.usage_w} W`);
+                if (@(uniqueId)_initializing || @(uniqueId)_currentlyReceiving) {
+                    @(uniqueId)_currentlyReceiving = false;
+                    $@(uniqueId)_headerDelta.addClass('bg-success');
+                    $@(uniqueId)_headerDelta.removeClass('bg-danger');
+                    $@(uniqueId)_deltaName.text('@_localizer[Resources.Views.Data._LiveDataPartial.Delivering]');
+                }
+            }
+            @(uniqueId)_initializing = false;
+        }
+    });
+</script>

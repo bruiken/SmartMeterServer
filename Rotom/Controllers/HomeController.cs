@@ -12,6 +12,7 @@ namespace Rotom.Controllers
             public const string Index = "Index";
             public const string Error = "Error";
         }
+
         public HomeController()
         {
         }
@@ -28,7 +29,7 @@ namespace Rotom.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction(DataController.Actions.Live, DataController.Name);
         }
     }
 }

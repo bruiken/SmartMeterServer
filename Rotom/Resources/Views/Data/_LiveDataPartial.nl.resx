@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Welcome" xml:space="preserve">
-    <value>Welcome</value>
+  <data name="Delivering" xml:space="preserve">
+    <value>Teruglevering</value>
+  </data>
+  <data name="Generating" xml:space="preserve">
+    <value>Oplevering</value>
+  </data>
+  <data name="Receiving" xml:space="preserve">
+    <value>Toelevering</value>
+  </data>
+  <data name="Using" xml:space="preserve">
+    <value>Verbruik</value>
   </data>
 </root>

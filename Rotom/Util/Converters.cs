@@ -144,5 +144,21 @@
                     }),
             };
         }
+
+        public static Models.LiveInstallationModel Convert(Abstract.Models.Installation installation, Abstract.Models.Settings settings)
+        {
+            return new Models.LiveInstallationModel
+            {
+                Id = installation.Id,
+                LocationId = installation.LocationId,
+                Name = installation.Name,
+                RabbitMQUsername = installation.RabbitMQUsername,
+                RabbitMQPassword = installation.RabbitMQPassword,
+                RabbitMQExchange = installation.RabbitMQExchange,
+                RabbitMQVHost = installation.RabbitMQVHost,
+                RabbitMQHostname = settings.RabbitMQHostname,
+                RabbitMQPort = settings.RabbitMQPort,
+            };
+        }
     }
 }
