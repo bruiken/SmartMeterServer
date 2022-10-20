@@ -123,6 +123,9 @@
   <data name="Generating" xml:space="preserve">
     <value>Generating</value>
   </data>
+  <data name="NoConnection" xml:space="preserve">
+    <value>No connection!</value>
+  </data>
   <data name="Receiving" xml:space="preserve">
     <value>Receiving</value>
   </data>

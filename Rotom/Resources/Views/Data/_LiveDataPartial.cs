@@ -6,5 +6,6 @@
         public const string Generating = "Generating";
         public const string Receiving = "Receiving";
         public const string Delivering = "Delivering";
+        public const string NoConnection = "NoConnection";
     }
 }
