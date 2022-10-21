@@ -129,6 +129,9 @@
   <data name="Keys.CannotDeleteUser" xml:space="preserve">
     <value>Kan gebruiker niet verwijderen</value>
   </data>
+  <data name="Keys.CannotGenerateApiToken" xml:space="preserve">
+    <value>Fout bij genereren API token</value>
+  </data>
   <data name="Keys.CannotLogin" xml:space="preserve">
     <value>Inloggen mislukt</value>
   </data>

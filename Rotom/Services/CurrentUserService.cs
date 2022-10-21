@@ -18,6 +18,7 @@ namespace Rotom.Services
 
         public string CurrentUserContextItem => "User";
         public string PermissionsContextItem => "Permissions";
+        public string InstallationIdContextItem => "InstllationId";
 
         public bool IsLoggedIn => GetCurrentUser() != null;
 
@@ -78,6 +79,11 @@ namespace Rotom.Services
             {
                 return _roleService.RoleIsAllowedPermission(role, permission);
             }
+        }
+
+        public int? GetCurrentInstallationId()
+        {
+            return _httpContextAccessor.HttpContext.Items[InstallationIdContextItem] as int?;
         }
     }
 }

@@ -15,15 +15,18 @@ namespace Rotom.Controllers
             public const string Create = "Create";
             public const string Update = "Update";
             public const string Delete = "Delete";
+            public const string GenerateToken = "GenerateToken";
         }
 
         private readonly Abstract.Services.IInstallationService _installationService;
         private readonly Abstract.Services.IUserService _userService;
+        private readonly Abstract.Services.IReaderTokenService _readerTokenService;
 
-        public InstallationController(Abstract.Services.IInstallationService installationService, Abstract.Services.IUserService userService)
+        public InstallationController(Abstract.Services.IInstallationService installationService, Abstract.Services.IUserService userService, Abstract.Services.IReaderTokenService readerTokenService)
         {
             _installationService = installationService;
             _userService = userService;
+            _readerTokenService = readerTokenService;
         }
 
         [HttpGet]
@@ -100,6 +103,14 @@ namespace Rotom.Controllers
         {
             _installationService.DeleteInstallation(id);
             return RedirectToAction(Actions.Index, Name);
+        }
+
+        [HttpPost]
+        [Route("{id}/Token")]
+        public JsonResult GenerateToken([FromRoute] int id)
+        {
+            string token = _readerTokenService.GenerateToken(id);
+            return Json(token);
         }
     }
 }

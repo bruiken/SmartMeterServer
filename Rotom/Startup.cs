@@ -33,6 +33,7 @@ namespace Rotom
             services.AddScoped<Abstract.Services.IRoleService, Concrete.Services.RoleService>();
             services.AddScoped<Abstract.Services.ISettingsService, Concrete.Services.SettingsService>();
             services.AddScoped<Abstract.Services.IInstallationService, Concrete.Services.InstallationService>();
+            services.AddScoped<Abstract.Services.IReaderTokenService, Concrete.Services.ReaderTokenService>();
 
             services.Configure<Settings.DatabaseSettings>(Configuration.GetSection(DATABASE_SETTINGS_KEY));
             services.Configure<Abstract.Settings.JwtSettings>(Configuration.GetSection(JWT_SETTINGS_KEY));

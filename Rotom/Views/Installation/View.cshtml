@@ -62,5 +62,33 @@
                 <span class="float-end">@string.Join(", ", Model.InstallationAccesses.Select(a => a.Username))</span>
             </div>
         </div>
+        <div class="row pt-3 pb-1">
+            <div class="col">
+                <a href="#" id="generateTokenButton" class="btn btn-warning">@_localizer[Resources.Views.Installation.View.GenerateToken]</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-info text-break d-none" id="tokenResultLocation"></div>
+            </div>
+        </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(() => {
+            $('#generateTokenButton').on('click', () => {
+                $.ajax({
+                    url: '@Url.Action(Controllers.InstallationController.Actions.GenerateToken, Controllers.InstallationController.Name, new { Model.Id })',
+                    type: 'POST',
+                    success: function (res) {
+                        $('#tokenResultLocation').text(res);
+                        $('#tokenResultLocation').removeClass('d-none');
+                    }
+                });
+            });
+        });
+    </script>
+}

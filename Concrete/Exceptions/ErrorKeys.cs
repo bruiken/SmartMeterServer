@@ -10,6 +10,7 @@
             public const string CannotSaveSettings = "Keys.CannotSaveSettings";
             public const string CannotCreateInstallation = "Keys.CannotCreateInstallation";
             public const string CannotDeleteInstallation = "Keys.CannotDeleteInstallation";
+            public const string CannotGenerateApiToken = "Keys.CannotGenerateApiToken";
         }
 
         public static class Messages

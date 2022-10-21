@@ -12,6 +12,10 @@ namespace Abstract.Services
 
         string GenerateJwtToken(Models.User user, TimeSpan validityPeriod);
 
+        string GenerateJwtToken(Models.Installation installation);
+
         string IdClaim { get; }
+
+        string InstallationIdClaim { get; }
     }
 }

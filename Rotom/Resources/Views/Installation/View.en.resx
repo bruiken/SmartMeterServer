@@ -126,6 +126,9 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="GenerateToken" xml:space="preserve">
+    <value>Generate API token</value>
+  </data>
   <data name="Installation" xml:space="preserve">
     <value>Installation {0}</value>
   </data>

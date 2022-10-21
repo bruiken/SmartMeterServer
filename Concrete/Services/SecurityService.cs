@@ -18,6 +18,8 @@ namespace Concrete.Services
 
         public string IdClaim => "id";
 
+        public string InstallationIdClaim => "installationId";
+
         public SecurityService(IOptions<Abstract.Settings.JwtSettings> options)
         {
             _jwtSettings = options.Value;
@@ -76,6 +78,19 @@ namespace Concrete.Services
             using var algorithm = new Rfc2898DeriveBytes(plaintext, salt, Iterations, HashAlgorithmName.SHA256);
             var keyToCheck = algorithm.GetBytes(KeySize);
             return keyToCheck.SequenceEqual(key);
+        }
+
+        public string GenerateJwtToken(Installation installation)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim(InstallationIdClaim, installation.Id.ToString()) }),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

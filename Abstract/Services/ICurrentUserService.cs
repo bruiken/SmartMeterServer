@@ -4,8 +4,11 @@
     {
         string CurrentUserContextItem { get; }
         string PermissionsContextItem { get; }
+        string InstallationIdContextItem { get; }
 
         Models.User? GetCurrentUser();
+
+        int? GetCurrentInstallationId();
 
         string? GetRefreshTokenCookie();
 

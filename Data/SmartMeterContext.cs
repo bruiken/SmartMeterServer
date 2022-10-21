@@ -16,6 +16,7 @@ namespace Data
         public DbSet<Installation> Installations { get; set; }
         public DbSet<InstallationAccess> InstallationsAccesses { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<ReaderApiToken> ReaderApiTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,7 @@ namespace Data
             InstallationMeta.OnModelCreating(modelBuilder);
             InstallationAccessMeta.OnModelCreating(modelBuilder);
             SettingMeta.OnModelCreating(modelBuilder);
+            ReaderApiTokenMeta.OnModelCreating(modelBuilder);
         }
     }
 }

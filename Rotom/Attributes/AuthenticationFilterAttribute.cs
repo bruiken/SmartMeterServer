@@ -11,7 +11,7 @@ namespace Rotom.Attributes
 
         public object? Permission { get; set; }
 
-        public bool IsReusable => true;
+        public bool IsReusable => false;
 
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
