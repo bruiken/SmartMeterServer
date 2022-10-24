@@ -64,20 +64,21 @@
             $@(uniqueId)_no_conn.removeClass('d-none');
         }
 
+        let datapoints = 250;
         @(uniqueId)_listener.data_callback = function (data) {
             $@(uniqueId)_no_conn.addClass('d-none');
 
             @(uniqueId)_liveChart.data.datasets[0].data.push(data.generated_w - data.usage_w);
-            @(uniqueId)_liveChart.data.datasets[0].data = @(uniqueId)_liveChart.data.datasets[0].data.slice(-200);
+            @(uniqueId)_liveChart.data.datasets[0].data = @(uniqueId)_liveChart.data.datasets[0].data.slice(-datapoints);
 
             @(uniqueId)_liveChart.data.datasets[2].data.push(data.generated_w);
-            @(uniqueId)_liveChart.data.datasets[2].data = @(uniqueId)_liveChart.data.datasets[2].data.slice(-200);
+            @(uniqueId)_liveChart.data.datasets[2].data = @(uniqueId)_liveChart.data.datasets[2].data.slice(-datapoints);
 
             @(uniqueId)_liveChart.data.datasets[1].data.push(data.usage_w * -1);
-            @(uniqueId)_liveChart.data.datasets[1].data = @(uniqueId)_liveChart.data.datasets[1].data.slice(-200);
+            @(uniqueId)_liveChart.data.datasets[1].data = @(uniqueId)_liveChart.data.datasets[1].data.slice(-datapoints);
 
             @(uniqueId)_liveChart.data.labels.push(data.time);
-            @(uniqueId)_liveChart.data.labels = @(uniqueId)_liveChart.data.labels.slice(-200);
+            @(uniqueId)_liveChart.data.labels = @(uniqueId)_liveChart.data.labels.slice(-datapoints);
 
             @(uniqueId)_liveChart.update('none');
 

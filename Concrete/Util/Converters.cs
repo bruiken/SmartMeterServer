@@ -69,5 +69,18 @@
                 RabbitMQVHost = installation.RabbitMQVHost,
             };
         }
+
+        public static Data.Models.MeterData Convert(Abstract.Models.MeterData data)
+        {
+            return new Data.Models.MeterData
+            {
+                Time = data.Time,
+                KwhInT1 = data.KwhInT1,
+                KwhInT2 = data.KwhInT2,
+                KwhOutT1 = data.KwhOutT1,
+                KwhOutT2 = data.KwhOutT2,
+                GasReadout = data.GasReadout,
+            };
+        }
     }
 }

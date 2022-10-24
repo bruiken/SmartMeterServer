@@ -160,5 +160,18 @@
                 RabbitMQPort = settings.RabbitMQPort,
             };
         }
+
+        public static Abstract.Models.MeterData Convert(Models.ReportDataApiModel model)
+        {
+            return new Abstract.Models.MeterData
+            {
+                Time = model.Time,
+                KwhInT1 = model.KwhInT1,
+                KwhInT2 = model.KwhInT2,
+                KwhOutT1 = model.KwhOutT1,
+                KwhOutT2 = model.KwhOutT2,
+                GasReadout = model.GasReadout,
+            };
+        }
     }
 }

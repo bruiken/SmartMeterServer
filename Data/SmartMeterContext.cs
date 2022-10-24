@@ -17,6 +17,7 @@ namespace Data
         public DbSet<InstallationAccess> InstallationsAccesses { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<ReaderApiToken> ReaderApiTokens { get; set; }
+        public DbSet<MeterData> MeterData { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,7 @@ namespace Data
             InstallationAccessMeta.OnModelCreating(modelBuilder);
             SettingMeta.OnModelCreating(modelBuilder);
             ReaderApiTokenMeta.OnModelCreating(modelBuilder);
+            MeterDataMeta.OnModelCreating(modelBuilder);
         }
     }
 }
