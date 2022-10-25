@@ -1,12 +1,11 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Data.Migrations
 {
-    public partial class AddDataStore : Migration
+    public partial class AddMeterData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +13,7 @@ namespace Data.Migrations
                 name: "MeterData",
                 columns: table => new
                 {
-                    InstallationId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    InstallationId = table.Column<int>(type: "int", nullable: false),
                     Time = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     KwhInT1 = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     KwhInT2 = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
@@ -25,8 +23,7 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MeterData", x => x.InstallationId);
-                    table.UniqueConstraint("AK_MeterData_Time", x => x.Time);
+                    table.PrimaryKey("PK_MeterData", x => new { x.InstallationId, x.Time });
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
         }

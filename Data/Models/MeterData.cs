@@ -5,7 +5,6 @@ namespace Data.Models
 {
     public class MeterData
     {
-        [Key]
         public int InstallationId { get; set; }
 
         public DateTime Time { get; set; }
@@ -29,7 +28,7 @@ namespace Data.Models
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MeterData>()
-                .HasAlternateKey(e => e.Time);
+                .HasKey(e => new { e.InstallationId, e.Time });
         }
     }
 }

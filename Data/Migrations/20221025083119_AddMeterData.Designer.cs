@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(SmartMeterContext))]
-    [Migration("20221024152342_AddDataStore")]
-    partial class AddDataStore
+    [Migration("20221025083119_AddMeterData")]
+    partial class AddMeterData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -76,8 +76,10 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.MeterData", b =>
                 {
                     b.Property<int>("InstallationId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<decimal>("GasReadout")
                         .HasColumnType("decimal(65,30)");
@@ -94,12 +96,7 @@ namespace Data.Migrations
                     b.Property<decimal>("KwhOutT2")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("InstallationId");
-
-                    b.HasAlternateKey("Time");
+                    b.HasKey("InstallationId", "Time");
 
                     b.ToTable("MeterData");
                 });
