@@ -90,7 +90,7 @@ namespace Rotom
         {
             if (!env.IsDevelopment())
             {
-                app.UseExceptionHandler(HomeController.Actions.Error);
+                app.UseExceptionHandler($"/{HomeController.Actions.Error}");
                 app.UseHsts();
             }
             else
