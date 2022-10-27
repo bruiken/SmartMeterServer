@@ -47,7 +47,7 @@
     }
 
     createClient() {
-        const ws = new WebSocket(`ws://${this.hostname}:${this.port}/ws`);
+        const ws = new WebSocket(`wss://${this.hostname}:${this.port}/ws`);
         this.client = Stomp.over(ws);
         this.client.debug = null;
         this.client.connect(this.username, this.password, () => { this.on_connect(this) }, () => { this.on_error(this) }, this.vhost);
