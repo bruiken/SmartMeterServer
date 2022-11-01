@@ -7,9 +7,11 @@
 }
 
 <div class="row justify-content-center pt-4">
-    <div class="col col-md-8 bg-light position-relative border bg-opacity-10 bg-gradient pb-1 pt-2 rounded-top">
+    <div class="col col-md-8 bg-light border bg-opacity-10 bg-gradient pb-1 pt-2 rounded-top d-flex">
         <h2>@Model.Name</h2>
-        <span id="@(uniqueId)-no-connection" class="position-absolute top-0 end-0 fw-bold p-1 text-warning">@_localizer[Resources.Views.Data._LiveDataPartial.NoConnection]</span>
+        <div class="ms-auto">
+            <a class="btn btn-primary" href="@Url.Action(Controllers.DataController.Actions.History, new { installationId = Model.Id })">@_localizer[Resources.Views.Data._LiveDataPartial.ToHistoricalData]</a>
+        </div>
     </div>
 </div>
 <div class="row justify-content-center">
@@ -29,8 +31,9 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="col col-md-8 py-3 bg-light bg-opacity-10 bg-gradient border-start border-end border-bottom rounded-bottom">
+    <div class="col col-md-8 py-3 bg-light bg-opacity-10 bg-gradient border-start border-end border-bottom rounded-bottom position-relative">
         <canvas id="@(uniqueId)_liveChart"></canvas>
+        <span id="@(uniqueId)-no-connection" class="position-absolute top-0 end-0 fw-bold p-1 text-warning">@_localizer[Resources.Views.Data._LiveDataPartial.NoConnection]</span>
     </div>
 </div>
 

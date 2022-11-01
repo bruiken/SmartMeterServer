@@ -8,12 +8,18 @@ namespace Rotom.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Abstract.Services.IRoleService _roleService;
         private readonly Settings.CookieSettings _cookieSettings;
+        private readonly Abstract.Services.IInstallationService _installationService;
 
-        public CurrentUserService(IHttpContextAccessor httpContextAccessor, IOptions<Settings.CookieSettings> options, Abstract.Services.IRoleService roleService)
+        public CurrentUserService(
+            IHttpContextAccessor httpContextAccessor,
+            IOptions<Settings.CookieSettings> options,
+            Abstract.Services.IRoleService roleService,
+            Abstract.Services.IInstallationService installationService)
         {
             _httpContextAccessor = httpContextAccessor;
             _cookieSettings = options.Value;
             _roleService = roleService;
+            _installationService = installationService;
         }
 
         public string CurrentUserContextItem => "User";
@@ -84,6 +90,12 @@ namespace Rotom.Services
         public int? GetCurrentInstallationId()
         {
             return _httpContextAccessor.HttpContext.Items[InstallationIdContextItem] as int?;
+        }
+
+        public bool CanAccessInstallation(int installationId)
+        {
+            Abstract.Models.User? currentUser = GetCurrentUser();
+            return currentUser != null && _installationService.HasAccess(currentUser.Id, installationId);
         }
     }
 }

@@ -82,5 +82,18 @@
                 GasReadout = data.GasReadout,
             };
         }
+
+        public static Abstract.Models.MeterData Convert(Data.Models.MeterData data)
+        {
+            return new Abstract.Models.MeterData
+            {
+                Time = data.Time,
+                KwhInT1 = data.KwhInT1,
+                KwhInT2 = data.KwhInT2,
+                KwhOutT1 = data.KwhOutT1,
+                KwhOutT2 = data.KwhOutT2,
+                GasReadout = data.GasReadout,
+            };
+        }
     }
 }

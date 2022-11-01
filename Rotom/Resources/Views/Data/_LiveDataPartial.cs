@@ -7,5 +7,6 @@
         public const string Receiving = "Receiving";
         public const string Delivering = "Delivering";
         public const string NoConnection = "NoConnection";
+        public const string ToHistoricalData = "ToHistoricalData";
     }
 }

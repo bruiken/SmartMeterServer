@@ -1,0 +1,107 @@
+﻿@model HistoryDataModel
+
+@inject IViewLocalizer _localizer;
+
+@{
+    ViewData["Title"] = _localizer[Resources.Views.Data.History.HistoricalData, Model.InstallationName];
+}
+
+<div class="row justify-content-center pt-4">
+    <div class="col col-md-8 bg-light border bg-opacity-10 bg-gradient pb-1 pt-2 rounded-top d-flex">
+        <h2>@Model.InstallationName</h2>
+        <div class="ms-auto">
+            <a class="btn btn-primary" href="@Url.Action(Controllers.DataController.Actions.Live)">@_localizer[Resources.Views.Data.History.ToLivePage]</a>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom d-flex justify-content-center">
+        <div class="btn-group" role="group" aria-label="Toggle graph range">
+            @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Monthly, new { @class = "btn-check graph-input", autocomplete = "off", id = "monthly-m" })
+            <label class="btn btn-outline-primary fw-bold" for="monthly-m">@_localizer[Resources.Views.Data.History.Month]</label>
+            @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Weekly, new { @class = "btn-check graph-input", autocomplete = "off", id = "weekly-m" })
+            <label class="btn btn-outline-primary fw-bold" for="weekly-m">@_localizer[Resources.Views.Data.History.Week]</label>
+            @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Daily, new { @class = "btn-check graph-input", autocomplete = "off", id = "daily-m" })
+            <label class="btn btn-outline-primary fw-bold" for="daily-m">@_localizer[Resources.Views.Data.History.Day]</label>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom">
+        <div class="row justify-content-center">
+            <div class="col-auto pe-0">
+                <button id="prevButton" role="button" class="btn btn-primary">&lt;</button>
+            </div>
+            <div class="col-7 col-md-6 col-lg-4 px-1 d-flex">
+                @Html.TextBoxFor(m => m.SelectedDate, "{0:d}", new { id = "date-select", @class = "form-control p-1 align-self-center datepicker graph-input" })
+            </div>
+            <div class="col-auto ps-0">
+                <button id="nextButton" role="button" class="btn btn-primary">&gt;</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="historyChart">
+    @await Html.PartialAsync("_HistoryChartPartial", Model)
+</div>
+
+@section Scripts
+{
+    <script src="~/js/charter.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.@(System.Globalization.CultureInfo.CurrentCulture.Name).min.js"></script>
+
+    <script type="text/javascript">
+        const lang = '@Html.Raw(System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName)';
+        $(() => {
+            $('.datepicker').datepicker({
+                language: lang,
+                autoclose: true
+            });
+
+            $('.graph-input').on('change', function () {
+                reloadGraph();
+            });
+
+            $('#nextButton').on('click', function () {
+                const dateRaw = $('#date-select').datepicker('getDate');
+                const dateUTC = new Date(Date.UTC(dateRaw.getFullYear(), dateRaw.getMonth(), dateRaw.getDate()));
+                const graphType = $('input[name=GraphType]:checked').val();
+
+                const deltaMonths = graphType == "Monthly" ? 1 : 0;
+                const deltaDays = graphType == "Daily" ? 1 : graphType == "Weekly" ? 7 : 0;
+
+                const targetDate = new Date(dateUTC.getFullYear(), dateUTC.getMonth() + deltaMonths, dateUTC.getDate() + deltaDays);
+                $('#date-select').datepicker('setDate', targetDate);
+            });
+
+            $('#prevButton').on('click', function () {
+                const dateRaw = $('#date-select').datepicker('getDate');
+                const dateUTC = new Date(Date.UTC(dateRaw.getFullYear(), dateRaw.getMonth(), dateRaw.getDate()));
+                const graphType = $('input[name=GraphType]:checked').val();
+
+                const deltaMonths = graphType == "Monthly" ? 1 : 0;
+                const deltaDays = graphType == "Daily" ? 1 : graphType == "Weekly" ? 7 : 0;
+
+                const targetDate = new Date(dateUTC.getFullYear(), dateUTC.getMonth() - deltaMonths, dateUTC.getDate() - deltaDays);
+                $('#date-select').datepicker('setDate', targetDate);
+            });
+
+            function reloadGraph() {
+                const graphType = $('input[name=GraphType]:checked').val();
+                const dateRaw = $('#date-select').datepicker('getDate');
+                const dateUTC = new Date(Date.UTC(dateRaw.getFullYear(), dateRaw.getMonth(), dateRaw.getDate()));
+                const date = dateUTC.toISOString().slice(0, 10)
+                
+                $.ajax({
+                    url: `History/${graphType}/${date}`,
+                    type: 'POST',
+                    success: function (res) {
+                        $('#historyChart').html(res);
+                    }
+                });
+            }
+        });
+    </script>
+}

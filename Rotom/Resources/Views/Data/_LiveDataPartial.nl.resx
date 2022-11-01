@@ -129,6 +129,9 @@
   <data name="Receiving" xml:space="preserve">
     <value>Toelevering</value>
   </data>
+  <data name="ToHistoricalData" xml:space="preserve">
+    <value>Historische data</value>
+  </data>
   <data name="Using" xml:space="preserve">
     <value>Verbruik</value>
   </data>

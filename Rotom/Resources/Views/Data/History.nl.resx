@@ -117,22 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Delivering" xml:space="preserve">
-    <value>Delivering</value>
+  <data name="Day" xml:space="preserve">
+    <value>Dag</value>
   </data>
-  <data name="Generating" xml:space="preserve">
-    <value>Generating</value>
+  <data name="HistoricalData" xml:space="preserve">
+    <value>Historische data - {0}</value>
   </data>
-  <data name="NoConnection" xml:space="preserve">
-    <value>No connection!</value>
+  <data name="Month" xml:space="preserve">
+    <value>Maand</value>
   </data>
-  <data name="Receiving" xml:space="preserve">
-    <value>Receiving</value>
+  <data name="ToLivePage" xml:space="preserve">
+    <value>Live data</value>
   </data>
-  <data name="ToHistoricalData" xml:space="preserve">
-    <value>Historical data</value>
-  </data>
-  <data name="Using" xml:space="preserve">
-    <value>Using</value>
+  <data name="Week" xml:space="preserve">
+    <value>Week</value>
   </data>
 </root>

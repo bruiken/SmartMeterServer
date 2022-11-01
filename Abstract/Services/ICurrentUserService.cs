@@ -21,5 +21,7 @@
         bool IsLoggedIn { get; }
 
         bool UserIsAllowed(Models.EPermission permission);
+
+        bool CanAccessInstallation(int installationId);
     }
 }

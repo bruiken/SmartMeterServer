@@ -73,3 +73,61 @@
         }
     };
 }
+
+function getHistoryChartConfig(graphType) {
+    const data = {
+        datasets: [{
+            data: [],
+            fill: {
+                target: 'origin',
+                below: 'rgba(231, 76, 60, 0.7)',
+                above: 'rgba(0, 188, 140, 0.7)'
+            },
+            tension: 0.1,
+            pointRadius: 0,
+            pointHitRadius: 0,
+            showLine: false,
+        }]
+    };
+    return {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: graphType == 'Daily' ? 'hour' : 'day',
+                        displayFormats: {
+                            hour: 'kk:mm',
+                            day: 'd-M'
+                        }
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'kWh'
+                    },
+                    beginAtZero: true,
+                    suggestedMin: -0.1,
+                    suggestedMax: 0.1,
+                    ticks: {
+                        callback: function (val, index) {
+                            if (!isNaN(val)) {
+                                return Math.abs(val);
+                            }
+                            return val;
+                        },
+                        precision: 3
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    };
+}

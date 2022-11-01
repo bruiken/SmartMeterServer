@@ -198,5 +198,11 @@ namespace Concrete.Services
             }
             _db.SaveChanges();
         }
+
+        public bool HasAccess(int userId, int installationId)
+        {
+            return _db.InstallationsAccesses
+                .Any(a => a.InstallationId == installationId && a.UserId == userId);
+        }
     }
 }

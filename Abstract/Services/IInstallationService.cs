@@ -13,5 +13,7 @@
         void UpdateInstallation(Models.Installation installation);
 
         void DeleteInstallation(int id);
+
+        bool HasAccess(int userId, int installationId);
     }
 }
