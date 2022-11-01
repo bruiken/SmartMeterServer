@@ -40,16 +40,9 @@ namespace Rotom.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        [Route("Installation/{installationId}/History")]
-        public IActionResult History([FromRoute] int installationId)
+        private Models.HistoryDataModel CreateModel(int installationId, DateTime date, Abstract.Models.EGraphType graphType)
         {
-            if (!_currentUserService.CanAccessInstallation(installationId))
-            {
-                return Unauthorized();
-            }
-
-            IEnumerable<Abstract.Models.MeterData> data = _dataService.GetData(installationId, DateTime.Now.Date, Abstract.Models.EGraphType.Daily);
+            IEnumerable<Abstract.Models.MeterData> data = _dataService.GetData(installationId, date, graphType);
             Abstract.Models.Installation installation = _installationService.GetInstallation(installationId)!;
 
             Models.HistoryDataModel model = new()
@@ -78,6 +71,19 @@ namespace Rotom.Controllers
                 });
             }
 
+            return model;
+        }
+
+        [HttpGet]
+        [Route("Installation/{installationId}/History")]
+        public IActionResult History([FromRoute] int installationId)
+        {
+            if (!_currentUserService.CanAccessInstallation(installationId))
+            {
+                return Unauthorized();
+            }
+
+            Models.HistoryDataModel model = CreateModel(installationId, DateTime.Today, Abstract.Models.EGraphType.Daily);
             return View(model);
         }
 
@@ -90,35 +96,7 @@ namespace Rotom.Controllers
                 return Unauthorized();
             }
 
-            IEnumerable<Abstract.Models.MeterData> data = _dataService.GetData(installationId, time, timespan);
-            Abstract.Models.Installation installation = _installationService.GetInstallation(installationId)!;
-
-            Models.HistoryDataModel model = new()
-            {
-                SelectedDate = time,
-                InstallationId = installationId,
-                GraphType = timespan,
-                InstallationName = installation.Name,
-            };
-
-            if (data.Any())
-            {
-                decimal prevIn = data.First().KwhInT1 + data.First().KwhInT2;
-                decimal prevOut = data.First().KwhOutT1 + data.First().KwhOutT2;
-                model.HistoryData = data.Select(d =>
-                {
-                    Models.HistoryDataEntry result = new()
-                    {
-                        Time = d.Time.ToLocalTime(),
-                        KwhIn = decimal.Round(d.KwhInT1 + d.KwhInT2 - prevIn, 3),
-                        KwhOut = decimal.Round(d.KwhOutT1 + d.KwhOutT2 - prevOut, 3),
-                    };
-                    prevIn = d.KwhInT1 + d.KwhInT2;
-                    prevOut = d.KwhOutT1 + d.KwhOutT2;
-                    return result;
-                });
-            }
-
+            Models.HistoryDataModel model = CreateModel(installationId, time, timespan);
             return PartialView("_HistoryChartPartial", model);
         }
     }
