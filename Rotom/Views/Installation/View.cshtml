@@ -58,6 +58,12 @@
         </div>
         <div class="row">
             <div class="col">
+                <span class="fw-bold">@_localizer[Resources.Views.Installation.View.Timezone]</span>
+                <span class="float-end">@Model.Timezone</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <span class="fw-bold">@_localizer[Resources.Views.Installation.View.UsersWithAccess]</span>
                 <span class="float-end">@string.Join(", ", Model.InstallationAccesses.Select(a => a.Username))</span>
             </div>

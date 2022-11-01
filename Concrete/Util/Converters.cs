@@ -53,6 +53,7 @@
                 RabbitMQPassword = installation.RabbitMQPassword,
                 RabbitMQExchange = installation.RabbitMQExchange,
                 RabbitMQVHost = installation.RabbitMQVHost,
+                Timezone = installation.Timezone,
             };
         }
 
@@ -67,6 +68,7 @@
                 RabbitMQPassword = installation.RabbitMQPassword,
                 RabbitMQExchange = installation.RabbitMQExchange,
                 RabbitMQVHost = installation.RabbitMQVHost,
+                Timezone = installation.Timezone,
             };
         }
 

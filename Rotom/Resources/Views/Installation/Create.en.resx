@@ -144,6 +144,9 @@
   <data name="RabbitMQVHost" xml:space="preserve">
     <value>RabbitMQ Virtual host</value>
   </data>
+  <data name="Timezone" xml:space="preserve">
+    <value>Timezone</value>
+  </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
   </data>

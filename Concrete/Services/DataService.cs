@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Concrete.Services
 {
     public class DataService : Abstract.Services.IDataService
     {
         private readonly Data.SmartMeterContext _db;
+        private readonly Abstract.Services.IInstallationService _installationService;
 
-        public DataService(Data.SmartMeterContext db)
+        public DataService(Data.SmartMeterContext db, Abstract.Services.IInstallationService installationService)
         {
             _db = db;
+            _installationService = installationService;
         }
 
         public int ReportingFrequencyMinutes => 5;
@@ -52,10 +55,16 @@ namespace Concrete.Services
 
         public IEnumerable<Abstract.Models.MeterData> GetData(int installationId, DateTime date, Abstract.Models.EGraphType graphType)
         {
+            Abstract.Models.Installation? installation = _installationService.GetInstallation(installationId);
+            if (installation == null)
+            {
+                throw new ArgumentException("The given installation does not exist");
+            }
+
             (DateTime start, DateTime end) = GetBoundaryDates(graphType, date);
 
-            DateTime utcStart = start - TimeZoneInfo.Local.GetUtcOffset(start);
-            DateTime utcEnd = end - TimeZoneInfo.Local.GetUtcOffset(end);
+            DateTime utcStart = start - TimeZoneInfo.FindSystemTimeZoneById(installation.Timezone).GetUtcOffset(start);
+            DateTime utcEnd = end - TimeZoneInfo.FindSystemTimeZoneById(installation.Timezone).GetUtcOffset(end);
 
             int minuteDelta = GetMinuteDelta(graphType);
             return _db.MeterData

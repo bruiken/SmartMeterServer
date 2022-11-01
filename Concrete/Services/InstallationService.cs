@@ -43,6 +43,27 @@ namespace Concrete.Services
                     MessageKey = Exceptions.ErrorKeys.Messages.InvalidInstallationRabbitMQSettings,
                 };
             }
+            if (string.IsNullOrWhiteSpace(installation.Timezone))
+            {
+                throw new Exceptions.InvalidInstallationException
+                {
+                    ErrorKey = Exceptions.ErrorKeys.Keys.CannotCreateInstallation,
+                    MessageKey = Exceptions.ErrorKeys.Messages.InvalidTimeZone,
+                };
+            }
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(installation.Timezone);
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                throw new Exceptions.InvalidInstallationException
+                {
+                    ErrorKey = Exceptions.ErrorKeys.Keys.CannotCreateInstallation,
+                    MessageKey = Exceptions.ErrorKeys.Messages.InvalidTimeZone,
+                };
+            }
+
             foreach (InstallationAccess access in installation.InstallationAccesses)
             {
                 if (!_db.Users.Any(u => u.Id == access.UserId))
@@ -175,6 +196,7 @@ namespace Concrete.Services
             dbInstallation.RabbitMQPassword = installation.RabbitMQPassword;
             dbInstallation.RabbitMQExchange = installation.RabbitMQExchange;
             dbInstallation.RabbitMQVHost = installation.RabbitMQVHost;
+            dbInstallation.Timezone = installation.Timezone;
 
             IEnumerable<int> newUserIds = installation.InstallationAccesses
                 .Select(i => i.UserId);

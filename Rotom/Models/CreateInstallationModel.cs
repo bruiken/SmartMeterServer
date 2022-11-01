@@ -16,6 +16,8 @@
 
         public string RabbitMQVHost { get; set; }
 
+        public string Timezone { get; set; }
+
         public List<CreateInstallationAccessModel> InstallationAccesses { get; set; }
     }
 

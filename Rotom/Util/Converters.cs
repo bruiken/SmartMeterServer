@@ -72,6 +72,7 @@
                 RabbitMQPassword = model.RabbitMQPassword,
                 RabbitMQExchange = model.RabbitMQExchange,
                 RabbitMQVHost = model.RabbitMQVHost,
+                Timezone = model.Timezone,
                 InstallationAccesses = model.InstallationAccesses.Select(Convert),
             };
         }
@@ -110,6 +111,7 @@
                 RabbitMQPassword = model.RabbitMQPassword,
                 RabbitMQExchange = model.RabbitMQExchange,
                 RabbitMQVHost = model.RabbitMQVHost,
+                Timezone = model.Timezone,
                 InstallationAccesses = model.InstallationAccesses.Select(u => new Models.CreateInstallationAccessModel
                 {
                     Selected = true,
@@ -135,6 +137,7 @@
                 RabbitMQPassword = model.RabbitMQPassword,
                 RabbitMQExchange = model.RabbitMQExchange,
                 RabbitMQVHost = model.RabbitMQVHost,
+                Timezone = model.Timezone,
                 InstallationAccesses = model.InstallationAccesses
                     .Where(i => i.Selected)
                     .Select(i => new Abstract.Models.InstallationAccess

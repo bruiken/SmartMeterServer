@@ -28,6 +28,7 @@
             public const string InvalidInstallationRabbitMQSettings = "Messages.InvalidInstallationRabbitMQSettings";
             public const string InvalidInstallationAccessUserId = "Messages.InvalidInstallationAccessUserId";
             public const string InstallationDoesNotExist = "Messages.InstallationDoesNotExist";
+            public const string InvalidTimeZone = "Messages.InvalidTimeZone";
         }
     }
 }

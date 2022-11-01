@@ -14,5 +14,6 @@
         public const string RabbitMQVHost = "RabbitMQVHost";
         public const string RabbitMQExchange = "RabbitMQExchange";
         public const string UpdateInstallation = "UpdateInstallation";
+        public const string Timezone = "Timezone";
     }
 }

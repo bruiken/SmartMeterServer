@@ -24,6 +24,9 @@ namespace Data.Models
 
         [Required]
         public string RabbitMQVHost { get; set; }
+
+        [Required]
+        public string Timezone { get; set; }
     }
 
     static class InstallationMeta

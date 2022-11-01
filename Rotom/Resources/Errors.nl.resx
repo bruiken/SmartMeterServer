@@ -165,6 +165,9 @@
   <data name="Messages.InvalidRole" xml:space="preserve">
     <value>De gegeven rol is niet bruikbaar</value>
   </data>
+  <data name="Messages.InvalidTimeZone" xml:space="preserve">
+    <value>De gegeven tijdzone is niet geldig</value>
+  </data>
   <data name="Messages.InvalidUsernamePassword" xml:space="preserve">
     <value>De gegeven combinatie van gebruikersnaam en wachtwoord werd niet herkend</value>
   </data>

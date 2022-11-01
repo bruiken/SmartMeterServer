@@ -91,6 +91,16 @@
             </div>
             <div class="row">
                 <div class="col">
+                    @_localizer[Resources.Views.Installation.Create.Timezone]
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @Html.TextBoxFor(m => m.Timezone, new { @class = "form-control", required = "required" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
                     @_localizer[Resources.Views.Installation.Create.UsersWithAccess]
                 </div>
             </div>
