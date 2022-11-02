@@ -94,11 +94,12 @@ namespace Rotom.Controllers
             {
                 decimal prevIn = data.First().KwhInT1 + data.First().KwhInT2;
                 decimal prevOut = data.First().KwhOutT1 + data.First().KwhOutT2;
+                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(installation.Timezone);
                 model.HistoryData = data.Select(d =>
                 {
                     Models.HistoryDataEntry result = new()
                     {
-                        Time = d.Time.ToLocalTime(),
+                        Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
                         KwhIn = decimal.Round(d.KwhInT1 + d.KwhInT2 - prevIn, 3),
                         KwhOut = decimal.Round(d.KwhOutT1 + d.KwhOutT2 - prevOut, 3),
                     };
