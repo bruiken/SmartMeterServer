@@ -100,7 +100,7 @@ namespace Rotom.Controllers
             }
         }
 
-        private static IEnumerable<Models.HistoryData.ElectricityDataEntry> CreateElectricityDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi)
+        private static IEnumerable<Models.HistoryData.ElectricityDataEntry> CreateElectricityDataEntryModels(IEnumerable<Abstract.Models.MeterData> data)
         {
             decimal prevIn = data.First().KwhInT1 + data.First().KwhInT2;
             decimal prevOut = data.First().KwhOutT1 + data.First().KwhOutT2;
@@ -108,7 +108,7 @@ namespace Rotom.Controllers
             {
                 Models.HistoryData.ElectricityDataEntry result = new()
                 {
-                    Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
+                    Time = d.Time.ToLocalTime(),
                     KwhIn = decimal.Round(d.KwhInT1 + d.KwhInT2 - prevIn, 3),
                     KwhOut = decimal.Round(d.KwhOutT1 + d.KwhOutT2 - prevOut, 3),
                 };
@@ -118,14 +118,14 @@ namespace Rotom.Controllers
             });
         }
 
-        private static IEnumerable<Models.HistoryData.GasDataEntry> CreateGasDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi)
+        private static IEnumerable<Models.HistoryData.GasDataEntry> CreateGasDataEntryModels(IEnumerable<Abstract.Models.MeterData> data)
         {
             decimal prevGas = data.First().GasReadout;
             return data.Select(d =>
             {
                 Models.HistoryData.GasDataEntry result = new()
                 {
-                    Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
+                    Time = d.Time.ToLocalTime(),
                     GasAmount = d.GasReadout - prevGas,
                 };
                 prevGas = d.GasReadout;
@@ -149,12 +149,10 @@ namespace Rotom.Controllers
 
             if (data.Any())
             {
-                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(installation.Timezone);
-
                 model.HistoryData = dataType switch
                 {
-                    Abstract.Models.EDataType.Electricity => CreateElectricityDataEntryModels(data, tzi),
-                    Abstract.Models.EDataType.Gas => CreateGasDataEntryModels(data, tzi),
+                    Abstract.Models.EDataType.Electricity => CreateElectricityDataEntryModels(data),
+                    Abstract.Models.EDataType.Gas => CreateGasDataEntryModels(data),
                     _ => throw new ArgumentException($"Unknown DataType {dataType}"),
                 };
             }
