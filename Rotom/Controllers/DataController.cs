@@ -100,7 +100,7 @@ namespace Rotom.Controllers
             }
         }
 
-        private static IEnumerable<Models.HistoryData.ElectricityDataEntry> CreateElectricityDataEntryModels(IEnumerable<Abstract.Models.MeterData> data)
+        private static IEnumerable<Models.HistoryData.ElectricityDataEntry> CreateElectricityDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi)
         {
             decimal prevIn = data.First().KwhInT1 + data.First().KwhInT2;
             decimal prevOut = data.First().KwhOutT1 + data.First().KwhOutT2;
@@ -108,9 +108,10 @@ namespace Rotom.Controllers
             {
                 Models.HistoryData.ElectricityDataEntry result = new()
                 {
-                    Time = d.Time.ToLocalTime(),
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
                     KwhIn = decimal.Round(d.KwhInT1 + d.KwhInT2 - prevIn, 3),
                     KwhOut = decimal.Round(d.KwhOutT1 + d.KwhOutT2 - prevOut, 3),
+                    TimeZone = tzi,
                 };
                 prevIn = d.KwhInT1 + d.KwhInT2;
                 prevOut = d.KwhOutT1 + d.KwhOutT2;
@@ -118,15 +119,16 @@ namespace Rotom.Controllers
             });
         }
 
-        private static IEnumerable<Models.HistoryData.GasDataEntry> CreateGasDataEntryModels(IEnumerable<Abstract.Models.MeterData> data)
+        private static IEnumerable<Models.HistoryData.GasDataEntry> CreateGasDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi)
         {
             decimal prevGas = data.First().GasReadout;
             return data.Select(d =>
             {
                 Models.HistoryData.GasDataEntry result = new()
                 {
-                    Time = d.Time.ToLocalTime(),
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
                     GasAmount = d.GasReadout - prevGas,
+                    TimeZone = tzi,
                 };
                 prevGas = d.GasReadout;
                 return result;
@@ -140,7 +142,7 @@ namespace Rotom.Controllers
 
             Models.HistoryDataModel model = new()
             {
-                SelectedDate = DateTime.Now.Date,
+                SelectedDate = date,
                 InstallationId = installationId,
                 GraphType = graphType,
                 InstallationName = installation.Name,
@@ -149,10 +151,12 @@ namespace Rotom.Controllers
 
             if (data.Any())
             {
+                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(installation.Timezone);
+
                 model.HistoryData = dataType switch
                 {
-                    Abstract.Models.EDataType.Electricity => CreateElectricityDataEntryModels(data),
-                    Abstract.Models.EDataType.Gas => CreateGasDataEntryModels(data),
+                    Abstract.Models.EDataType.Electricity => CreateElectricityDataEntryModels(data, tzi),
+                    Abstract.Models.EDataType.Gas => CreateGasDataEntryModels(data, tzi),
                     _ => throw new ArgumentException($"Unknown DataType {dataType}"),
                 };
             }

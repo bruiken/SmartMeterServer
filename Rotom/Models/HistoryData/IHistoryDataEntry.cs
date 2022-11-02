@@ -13,5 +13,8 @@ namespace Rotom.Models.HistoryData
         [JsonPropertyName("y")]
         [JsonPropertyOrder(2)]
         public decimal ValueY { get; }
+
+        [JsonIgnore]
+        public TimeZoneInfo TimeZone { get; set; }
     }
 }

@@ -89,7 +89,7 @@
         {
             return new Abstract.Models.MeterData
             {
-                Time = data.Time,
+                Time = DateTime.SpecifyKind(data.Time, DateTimeKind.Utc),
                 KwhInT1 = data.KwhInT1,
                 KwhInT2 = data.KwhInT2,
                 KwhOutT1 = data.KwhOutT1,
