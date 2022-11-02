@@ -97,7 +97,7 @@ namespace Rotom.Controllers
                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(installation.Timezone);
                 model.HistoryData = data.Select(d =>
                 {
-                    Models.HistoryDataEntry result = new()
+                    Models.HistoryData.ElectricityDataEntry result = new()
                     {
                         Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
                         KwhIn = decimal.Round(d.KwhInT1 + d.KwhInT2 - prevIn, 3),
