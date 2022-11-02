@@ -7,5 +7,7 @@
         void SaveData(int installationId, Models.MeterData data);
 
         IEnumerable<Models.MeterData> GetData(int installationId, DateTime date, Models.EGraphType graphType);
+
+        Models.DeltaAnalysis? GetAnalysis(int installationId, DateTime date, Models.EGraphType graphType);
     }
 }

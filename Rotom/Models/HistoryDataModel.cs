@@ -16,6 +16,8 @@ namespace Rotom.Models
 
         public IEnumerable<HistoryDataEntry> HistoryData { get; set; }
 
+        public IEnumerable<DeltaAnalysis.IDeltaAnalysis> DeltaAnalysis { get; set; }
+
         public string HistoryJson => System.Text.Json.JsonSerializer.Serialize(HistoryData);
     }
 

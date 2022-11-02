@@ -1,0 +1,28 @@
+﻿@model Models.DeltaAnalysis.IDeltaAnalysis
+
+<div class="row justify-content-center">
+    <div class="col col-md-8 py-3 border-start border-end border-bottom bg-light bg-opacity-10">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                @Model.Name
+            </div>
+            <div class="col-auto">
+                @Html.DisplayFor(m => m.UsageCurrentTimePeriod) @Model.Unit
+            </div>
+            @if (Model.ShowIncrease)
+            {
+                <div class="col-auto @(Model.IsPositive ? "text-success" : "text-danger")">
+                    @Model.ChangePercentage% 
+                    @if (Model.IsIncrease)
+                    {
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.Extensions.Localization;
 
 namespace Rotom.Controllers
 {
@@ -19,13 +19,20 @@ namespace Rotom.Controllers
         private readonly Abstract.Services.ICurrentUserService _currentUserService;
         private readonly Abstract.Services.ISettingsService _settingsService;
         private readonly Abstract.Services.IDataService _dataService;
+        private readonly IStringLocalizer<DataController> _localizer;
 
-        public DataController(Abstract.Services.IInstallationService installationService, Abstract.Services.ICurrentUserService currentUserService, Abstract.Services.ISettingsService settingsService, Abstract.Services.IDataService dataService)
+        public DataController(
+            Abstract.Services.IInstallationService installationService,
+            Abstract.Services.ICurrentUserService currentUserService,
+            Abstract.Services.ISettingsService settingsService,
+            Abstract.Services.IDataService dataService,
+            IStringLocalizer<DataController> localizer)
         {
             _installationService = installationService;
             _currentUserService = currentUserService;
             _settingsService = settingsService;
             _dataService = dataService;
+            _localizer = localizer;
         }
 
         [HttpGet]
@@ -38,6 +45,36 @@ namespace Rotom.Controllers
 
             IEnumerable<Models.LiveInstallationModel> model = installations.Select(i => Util.Converters.Convert(i, settings));
             return View(model);
+        }
+
+        private IEnumerable<Models.DeltaAnalysis.IDeltaAnalysis> CreateAnalysisModels(int installationId, DateTime date, Abstract.Models.EGraphType graphType)
+        {
+            Abstract.Models.DeltaAnalysis? analysis = _dataService.GetAnalysis(installationId, date, graphType);
+
+            if (analysis != null)
+            {
+                return new[]
+                {
+                    new Models.DeltaAnalysis.ElectricityDeltaAnalysis
+                    {
+                        Name = _localizer[Resources.Controllers.DataController.KwhInChange],
+                        IncreaseIsPositive = false,
+                        UsageCurrentTimePeriod = analysis.TotalKwhInCurrent,
+                        UsagePreviousTimePeriod = analysis.TotalKwhInPrevious,
+                    },
+                    new Models.DeltaAnalysis.ElectricityDeltaAnalysis
+                    {
+                        Name = _localizer[Resources.Controllers.DataController.KwhOutChange],
+                        IncreaseIsPositive = true,
+                        UsageCurrentTimePeriod = analysis.TotalKwhOutCurrent,
+                        UsagePreviousTimePeriod = analysis.TotalKwhOutPrevious,
+                    },
+                };
+            }
+            else
+            {
+                return Enumerable.Empty<Models.DeltaAnalysis.IDeltaAnalysis>();
+            }
         }
 
         private Models.HistoryDataModel CreateModel(int installationId, DateTime date, Abstract.Models.EGraphType graphType)
@@ -70,6 +107,8 @@ namespace Rotom.Controllers
                     return result;
                 });
             }
+
+            model.DeltaAnalysis = CreateAnalysisModels(installationId, date, graphType);
 
             return model;
         }

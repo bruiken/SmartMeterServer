@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Concrete.Services
 {
@@ -74,6 +73,62 @@ namespace Concrete.Services
                 .Where(d => EF.Functions.DateDiffMinute(utcStart, d.Time) % minuteDelta < ReportingFrequencyMinutes)
                 .AsEnumerable()
                 .Select(Util.Converters.Convert);
+        }
+
+        private static DateTime GetPreviousPeriodDate(DateTime date, Abstract.Models.EGraphType graphType)
+        {
+            return graphType switch
+            {
+                Abstract.Models.EGraphType.Daily => date.AddDays(-1),
+                Abstract.Models.EGraphType.Weekly => date.AddDays(-7),
+                Abstract.Models.EGraphType.Monthly => date.AddMonths(-1),
+                _ => throw new ArgumentException($"Unknown GraphType {graphType}"),
+            };
+        }
+
+        public Abstract.Models.DeltaAnalysis? GetAnalysis(int installationId, DateTime date, Abstract.Models.EGraphType graphType)
+        {
+            Abstract.Models.Installation? installation = _installationService.GetInstallation(installationId);
+            if (installation == null)
+            {
+                throw new ArgumentException("The given installation does not exist");
+            }
+
+            (DateTime curStart, DateTime curEnd) = GetBoundaryDates(graphType, date);
+            (DateTime prevStart, DateTime prevEnd) = GetBoundaryDates(graphType, GetPreviousPeriodDate(date, graphType));
+
+            IQueryable<Data.Models.MeterData> currentDataRange = _db.MeterData
+                .Where(d => d.Time >= curStart)
+                .Where(d => d.Time <= curEnd);
+            Data.Models.MeterData? curFirstData = currentDataRange
+                .OrderBy(d => d.Time)
+                .FirstOrDefault();
+            Data.Models.MeterData? curLastData = currentDataRange
+                .OrderByDescending(d => d.Time)
+                .FirstOrDefault();
+
+            IQueryable<Data.Models.MeterData> previousDataRange = _db.MeterData
+                .Where(d => d.Time >= prevStart)
+                .Where(d => d.Time <= prevEnd);
+            Data.Models.MeterData? prevFirstData = previousDataRange
+                .OrderBy(d => d.Time)
+                .FirstOrDefault();
+            Data.Models.MeterData? prevLastData = previousDataRange
+                .OrderByDescending(d => d.Time)
+                .FirstOrDefault();
+
+            if (!currentDataRange.Any())
+            {
+                return null;
+            }
+
+            return new Abstract.Models.DeltaAnalysis
+            {
+                TotalKwhInCurrent = (curLastData.KwhInT1 - curFirstData.KwhInT1) + (curLastData.KwhInT2 - curFirstData.KwhInT2),
+                TotalKwhOutCurrent = (curLastData.KwhOutT1 - curFirstData.KwhOutT1) + (curLastData.KwhOutT2 - curFirstData.KwhOutT2),
+                TotalKwhInPrevious = previousDataRange.Any() ? (prevLastData.KwhInT1 - prevFirstData.KwhInT1) + (prevLastData.KwhInT2 - prevFirstData.KwhInT2) : null,
+                TotalKwhOutPrevious = previousDataRange.Any() ? (prevLastData.KwhOutT1 - prevFirstData.KwhOutT1) + (prevLastData.KwhOutT2 - prevFirstData.KwhOutT2) : null,
+            };
         }
     }
 }

@@ -15,6 +15,18 @@
         }
     </div>
 </div>
+@if (Model.DeltaAnalysis != null)
+{
+    foreach (Models.DeltaAnalysis.IDeltaAnalysis deltaAnalysis in Model.DeltaAnalysis)
+    {
+        switch (deltaAnalysis)
+        {
+            case Models.DeltaAnalysis.ElectricityDeltaAnalysis:
+                @await Html.PartialAsync("_ElectricityDeltaAnalysisPartial", deltaAnalysis)
+                continue;
+        }
+    }
+}
 
 @if (Model.HistoryData != null && Model.HistoryData.Any())
 {
