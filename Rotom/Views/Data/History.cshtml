@@ -15,14 +15,26 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom d-flex justify-content-center">
-        <div class="btn-group" role="group" aria-label="Toggle graph range">
-            @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Monthly, new { @class = "btn-check graph-input", autocomplete = "off", id = "monthly-m" })
-            <label class="btn btn-outline-primary fw-bold" for="monthly-m">@_localizer[Resources.Views.Data.History.Month]</label>
-            @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Weekly, new { @class = "btn-check graph-input", autocomplete = "off", id = "weekly-m" })
-            <label class="btn btn-outline-primary fw-bold" for="weekly-m">@_localizer[Resources.Views.Data.History.Week]</label>
-            @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Daily, new { @class = "btn-check graph-input", autocomplete = "off", id = "daily-m" })
-            <label class="btn btn-outline-primary fw-bold" for="daily-m">@_localizer[Resources.Views.Data.History.Day]</label>
+    <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom">
+        <div class="row d-flex justify-content-center">
+            <div class="col-auto">
+                <div class="btn-group my-2 my-md-0" role="group" aria-label="Toggle graph range">
+                    @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Monthly, new { @class = "btn-check graph-input", autocomplete = "off", id = "monthly-m" })
+                    <label class="btn btn-outline-primary fw-bold" for="monthly-m">@_localizer[Resources.Views.Data.History.Month]</label>
+                    @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Weekly, new { @class = "btn-check graph-input", autocomplete = "off", id = "weekly-m" })
+                    <label class="btn btn-outline-primary fw-bold" for="weekly-m">@_localizer[Resources.Views.Data.History.Week]</label>
+                    @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Daily, new { @class = "btn-check graph-input", autocomplete = "off", id = "daily-m" })
+                    <label class="btn btn-outline-primary fw-bold" for="daily-m">@_localizer[Resources.Views.Data.History.Day]</label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="btn-group my-2 my-md-0" role="group" aria-label="Toggle graph range">
+                    @Html.RadioButtonFor(m => m.TypeOfData, Abstract.Models.EDataType.Electricity, new { @class = "btn-check graph-input", autocomplete = "off", id = "electricity-m" })
+                    <label class="btn btn-outline-primary fw-bold" for="electricity-m">@_localizer[Resources.Views.Data.History.Electricity]</label>
+                    @Html.RadioButtonFor(m => m.TypeOfData, Abstract.Models.EDataType.Gas, new { @class = "btn-check graph-input", autocomplete = "off", id = "gas-m" })
+                    <label class="btn btn-outline-primary fw-bold" for="gas-m">@_localizer[Resources.Views.Data.History.Gas]</label>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -90,12 +102,13 @@
 
             function reloadGraph() {
                 const graphType = $('input[name=GraphType]:checked').val();
+                const dataType = $('input[name=TypeOfData]:checked').val();
                 const dateRaw = $('#date-select').datepicker('getDate');
                 const dateUTC = new Date(Date.UTC(dateRaw.getFullYear(), dateRaw.getMonth(), dateRaw.getDate()));
                 const date = dateUTC.toISOString().slice(0, 10)
                 
                 $.ajax({
-                    url: `History/${graphType}/${date}`,
+                    url: `History/${dataType}/${graphType}/${date}`,
                     type: 'POST',
                     success: function (res) {
                         $('#historyChart').html(res);

@@ -120,6 +120,12 @@
   <data name="Day" xml:space="preserve">
     <value>Dag</value>
   </data>
+  <data name="Electricity" xml:space="preserve">
+    <value>Electriciteit</value>
+  </data>
+  <data name="Gas" xml:space="preserve">
+    <value>Gas</value>
+  </data>
   <data name="HistoricalData" xml:space="preserve">
     <value>Historische data - {0}</value>
   </data>

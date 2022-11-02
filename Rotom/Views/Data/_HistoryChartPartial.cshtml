@@ -19,12 +19,7 @@
 {
     foreach (Models.DeltaAnalysis.IDeltaAnalysis deltaAnalysis in Model.DeltaAnalysis)
     {
-        switch (deltaAnalysis)
-        {
-            case Models.DeltaAnalysis.ElectricityDeltaAnalysis:
-                @await Html.PartialAsync("_ElectricityDeltaAnalysisPartial", deltaAnalysis)
-                continue;
-        }
+        @await Html.PartialAsync("_DeltaAnalysisPartial", deltaAnalysis)
     }
 }
 
@@ -34,7 +29,7 @@
         $(() => {
             const @(uniqueId)_historyChart = new Chart(
                 $('#@(uniqueId)_historyChart'),
-                getHistoryChartConfig('@(Model.GraphType.ToString())')
+                getHistoryChartConfig('@(Model.GraphType.ToString())', '@(Model.TypeOfData.ToString())')
             );
 
             @(uniqueId)_historyChart.data.datasets[0].data = eval(@Html.Raw(Model.HistoryJson));

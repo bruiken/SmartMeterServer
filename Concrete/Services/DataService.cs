@@ -126,8 +126,10 @@ namespace Concrete.Services
             {
                 TotalKwhInCurrent = (curLastData.KwhInT1 - curFirstData.KwhInT1) + (curLastData.KwhInT2 - curFirstData.KwhInT2),
                 TotalKwhOutCurrent = (curLastData.KwhOutT1 - curFirstData.KwhOutT1) + (curLastData.KwhOutT2 - curFirstData.KwhOutT2),
+                TotalGasCurrent = curLastData.GasReadout - curFirstData.GasReadout,
                 TotalKwhInPrevious = previousDataRange.Any() ? (prevLastData.KwhInT1 - prevFirstData.KwhInT1) + (prevLastData.KwhInT2 - prevFirstData.KwhInT2) : null,
                 TotalKwhOutPrevious = previousDataRange.Any() ? (prevLastData.KwhOutT1 - prevFirstData.KwhOutT1) + (prevLastData.KwhOutT2 - prevFirstData.KwhOutT2) : null,
+                TotalGasPrevious = previousDataRange.Any() ? prevLastData.GasReadout - prevFirstData.GasReadout : null,
             };
         }
     }

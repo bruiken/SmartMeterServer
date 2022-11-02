@@ -9,6 +9,8 @@ namespace Rotom.Models
 
         public Abstract.Models.EGraphType GraphType { get; set; }
 
+        public Abstract.Models.EDataType TypeOfData { get; set; }
+
         public int InstallationId { get; set; }
 
         public string InstallationName { get; set; }

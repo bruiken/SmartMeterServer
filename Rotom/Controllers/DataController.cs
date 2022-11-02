@@ -47,28 +47,51 @@ namespace Rotom.Controllers
             return View(model);
         }
 
-        private IEnumerable<Models.DeltaAnalysis.IDeltaAnalysis> CreateAnalysisModels(int installationId, DateTime date, Abstract.Models.EGraphType graphType)
+        private IEnumerable<Models.DeltaAnalysis.ElectricityDeltaAnalysis> GetElectricityDeltaAnalysis(Abstract.Models.DeltaAnalysis analysis)
+        {
+            return new[]
+            {
+                new Models.DeltaAnalysis.ElectricityDeltaAnalysis
+                {
+                    Name = _localizer[Resources.Controllers.DataController.KwhInChange],
+                    IncreaseIsPositive = false,
+                    UsageCurrentTimePeriod = analysis.TotalKwhInCurrent,
+                    UsagePreviousTimePeriod = analysis.TotalKwhInPrevious,
+                },
+                new Models.DeltaAnalysis.ElectricityDeltaAnalysis
+                {
+                    Name = _localizer[Resources.Controllers.DataController.KwhOutChange],
+                    IncreaseIsPositive = true,
+                    UsageCurrentTimePeriod = analysis.TotalKwhOutCurrent,
+                    UsagePreviousTimePeriod = analysis.TotalKwhOutPrevious,
+                },
+            };
+        }
+
+        private IEnumerable<Models.DeltaAnalysis.GasDeltaAnalysis> GetGasDeltaAnalysis(Abstract.Models.DeltaAnalysis analysis)
+        {
+            return new[]
+            {
+                new Models.DeltaAnalysis.GasDeltaAnalysis
+                {
+                    Name = _localizer[Resources.Controllers.DataController.GasChange],
+                    UsageCurrentTimePeriod = analysis.TotalGasCurrent,
+                    UsagePreviousTimePeriod = analysis.TotalGasPrevious,
+                },
+            };
+        }
+
+        private IEnumerable<Models.DeltaAnalysis.IDeltaAnalysis> CreateAnalysisModels(int installationId, DateTime date, Abstract.Models.EGraphType graphType, Abstract.Models.EDataType dataType)
         {
             Abstract.Models.DeltaAnalysis? analysis = _dataService.GetAnalysis(installationId, date, graphType);
 
             if (analysis != null)
             {
-                return new[]
+                return dataType switch
                 {
-                    new Models.DeltaAnalysis.ElectricityDeltaAnalysis
-                    {
-                        Name = _localizer[Resources.Controllers.DataController.KwhInChange],
-                        IncreaseIsPositive = false,
-                        UsageCurrentTimePeriod = analysis.TotalKwhInCurrent,
-                        UsagePreviousTimePeriod = analysis.TotalKwhInPrevious,
-                    },
-                    new Models.DeltaAnalysis.ElectricityDeltaAnalysis
-                    {
-                        Name = _localizer[Resources.Controllers.DataController.KwhOutChange],
-                        IncreaseIsPositive = true,
-                        UsageCurrentTimePeriod = analysis.TotalKwhOutCurrent,
-                        UsagePreviousTimePeriod = analysis.TotalKwhOutPrevious,
-                    },
+                    Abstract.Models.EDataType.Electricity => GetElectricityDeltaAnalysis(analysis),
+                    Abstract.Models.EDataType.Gas => GetGasDeltaAnalysis(analysis),
+                    _ => throw new ArgumentException($"Unknown DataType {dataType}"),
                 };
             }
             else
@@ -77,7 +100,40 @@ namespace Rotom.Controllers
             }
         }
 
-        private Models.HistoryDataModel CreateModel(int installationId, DateTime date, Abstract.Models.EGraphType graphType)
+        private static IEnumerable<Models.HistoryData.ElectricityDataEntry> CreateElectricityDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi)
+        {
+            decimal prevIn = data.First().KwhInT1 + data.First().KwhInT2;
+            decimal prevOut = data.First().KwhOutT1 + data.First().KwhOutT2;
+            return data.Select(d =>
+            {
+                Models.HistoryData.ElectricityDataEntry result = new()
+                {
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
+                    KwhIn = decimal.Round(d.KwhInT1 + d.KwhInT2 - prevIn, 3),
+                    KwhOut = decimal.Round(d.KwhOutT1 + d.KwhOutT2 - prevOut, 3),
+                };
+                prevIn = d.KwhInT1 + d.KwhInT2;
+                prevOut = d.KwhOutT1 + d.KwhOutT2;
+                return result;
+            });
+        }
+
+        private static IEnumerable<Models.HistoryData.GasDataEntry> CreateGasDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi)
+        {
+            decimal prevGas = data.First().GasReadout;
+            return data.Select(d =>
+            {
+                Models.HistoryData.GasDataEntry result = new()
+                {
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
+                    GasAmount = d.GasReadout - prevGas,
+                };
+                prevGas = d.GasReadout;
+                return result;
+            });
+        }
+
+        private Models.HistoryDataModel CreateModel(int installationId, DateTime date, Abstract.Models.EGraphType graphType, Abstract.Models.EDataType dataType)
         {
             IEnumerable<Abstract.Models.MeterData> data = _dataService.GetData(installationId, date, graphType);
             Abstract.Models.Installation installation = _installationService.GetInstallation(installationId)!;
@@ -86,30 +142,24 @@ namespace Rotom.Controllers
             {
                 SelectedDate = DateTime.Now.Date,
                 InstallationId = installationId,
-                GraphType = Abstract.Models.EGraphType.Daily,
+                GraphType = graphType,
                 InstallationName = installation.Name,
+                TypeOfData = dataType,
             };
 
             if (data.Any())
             {
-                decimal prevIn = data.First().KwhInT1 + data.First().KwhInT2;
-                decimal prevOut = data.First().KwhOutT1 + data.First().KwhOutT2;
                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(installation.Timezone);
-                model.HistoryData = data.Select(d =>
+
+                model.HistoryData = dataType switch
                 {
-                    Models.HistoryData.ElectricityDataEntry result = new()
-                    {
-                        Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
-                        KwhIn = decimal.Round(d.KwhInT1 + d.KwhInT2 - prevIn, 3),
-                        KwhOut = decimal.Round(d.KwhOutT1 + d.KwhOutT2 - prevOut, 3),
-                    };
-                    prevIn = d.KwhInT1 + d.KwhInT2;
-                    prevOut = d.KwhOutT1 + d.KwhOutT2;
-                    return result;
-                });
+                    Abstract.Models.EDataType.Electricity => CreateElectricityDataEntryModels(data, tzi),
+                    Abstract.Models.EDataType.Gas => CreateGasDataEntryModels(data, tzi),
+                    _ => throw new ArgumentException($"Unknown DataType {dataType}"),
+                };
             }
 
-            model.DeltaAnalysis = CreateAnalysisModels(installationId, date, graphType);
+            model.DeltaAnalysis = CreateAnalysisModels(installationId, date, graphType, dataType);
 
             return model;
         }
@@ -123,20 +173,20 @@ namespace Rotom.Controllers
                 return Unauthorized();
             }
 
-            Models.HistoryDataModel model = CreateModel(installationId, DateTime.Today, Abstract.Models.EGraphType.Daily);
+            Models.HistoryDataModel model = CreateModel(installationId, DateTime.Today, Abstract.Models.EGraphType.Daily, Abstract.Models.EDataType.Electricity);
             return View(model);
         }
 
         [HttpPost]
-        [Route("Installation/{installationId}/History/{timespan}/{time}")]
-        public IActionResult HistoryPartial([FromRoute] int installationId, [FromRoute] Abstract.Models.EGraphType timespan, [FromRoute] DateTime time)
+        [Route("Installation/{installationId}/History/{dataType}/{timespan}/{time}")]
+        public IActionResult HistoryPartial([FromRoute] int installationId, [FromRoute] Abstract.Models.EDataType dataType, [FromRoute] Abstract.Models.EGraphType timespan, [FromRoute] DateTime time)
         {
             if (!_currentUserService.CanAccessInstallation(installationId))
             {
                 return Unauthorized();
             }
 
-            Models.HistoryDataModel model = CreateModel(installationId, time, timespan);
+            Models.HistoryDataModel model = CreateModel(installationId, time, timespan, dataType);
             return PartialView("_HistoryChartPartial", model);
         }
     }

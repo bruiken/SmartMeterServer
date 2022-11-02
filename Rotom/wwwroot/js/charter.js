@@ -74,24 +74,40 @@
     };
 }
 
-function getHistoryChartConfig(graphType) {
-    const data = {
-        datasets: [{
-            data: [],
-            fill: {
-                target: 'origin',
-                below: 'rgba(231, 76, 60, 0.7)',
-                above: 'rgba(0, 188, 140, 0.7)'
-            },
-            tension: 0.1,
-            pointRadius: 0,
-            pointHitRadius: 0,
-            showLine: false,
-        }]
-    };
+function getDataConfig(dataType) {
+    if (dataType == 'Electricity') {
+        return {
+            datasets: [{
+                data: [],
+                fill: {
+                    target: 'origin',
+                    below: 'rgba(231, 76, 60, 0.7)',
+                    above: 'rgba(0, 188, 140, 0.7)'
+                },
+                tension: 0.1,
+                pointRadius: 0,
+                pointHitRadius: 0,
+                showLine: false,
+            }]
+        };
+    }
+    if (dataType == 'Gas') {
+        return {
+            datasets: [{
+                data: [],
+                tension: 0.1,
+                pointRadius: 0,
+                pointHitRadius: 0,
+                borderColor: 'rgba(231, 76, 60, 0.7)',
+            }]
+        };
+    }
+}
+
+function getHistoryChartConfig(graphType, dataType) {
     return {
         type: 'line',
-        data: data,
+        data: getDataConfig(dataType),
         options: {
             scales: {
                 x: {
@@ -107,10 +123,10 @@ function getHistoryChartConfig(graphType) {
                 y: {
                     title: {
                         display: true,
-                        text: 'kWh'
+                        text: dataType == 'Electricity' ? 'kWh' : 'm3',
                     },
                     beginAtZero: true,
-                    suggestedMin: -0.1,
+                    suggestedMin: dataType == 'Electricity' ? -0.1 : 0,
                     suggestedMax: 0.1,
                     ticks: {
                         callback: function (val, index) {
