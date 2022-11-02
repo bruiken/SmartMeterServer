@@ -108,7 +108,7 @@ namespace Rotom.Controllers
             {
                 Models.HistoryData.ElectricityDataEntry result = new()
                 {
-                    Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
+                    Time = d.Time,
                     KwhIn = decimal.Round(d.KwhInT1 + d.KwhInT2 - prevIn, 3),
                     KwhOut = decimal.Round(d.KwhOutT1 + d.KwhOutT2 - prevOut, 3),
                     TimeZone = tzi,
@@ -126,7 +126,7 @@ namespace Rotom.Controllers
             {
                 Models.HistoryData.GasDataEntry result = new()
                 {
-                    Time = TimeZoneInfo.ConvertTimeFromUtc(d.Time, tzi),
+                    Time = d.Time,
                     GasAmount = d.GasReadout - prevGas,
                     TimeZone = tzi,
                 };

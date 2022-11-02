@@ -2,8 +2,7 @@
 {
     public class ElectricityDataEntry : IHistoryDataEntry
     {
-        
-        public long TimeX => (new DateTimeOffset(Time, TimeZone.GetUtcOffset(Time))).ToUnixTimeMilliseconds();
+        public long TimeX => (new DateTimeOffset(Time, TimeSpan.Zero)).ToUnixTimeMilliseconds() + (long)TimeZone.GetUtcOffset(Time).TotalMilliseconds;
 
         public decimal ValueY => decimal.Round(KwhOut - KwhIn, 3);
 

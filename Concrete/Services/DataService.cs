@@ -71,7 +71,7 @@ namespace Concrete.Services
                 .Where(d => d.Time >= utcStart)
                 .Where(d => d.Time <= utcEnd)
                 .Where(d => EF.Functions.DateDiffMinute(utcStart, d.Time) % minuteDelta < ReportingFrequencyMinutes)
-                .AsEnumerable()
+                .ToList()
                 .Select(Util.Converters.Convert);
         }
 

@@ -111,11 +111,16 @@ function getHistoryChartConfig(graphType, dataType) {
         options: {
             scales: {
                 x: {
+                    adapters: {
+                        date: {
+                            zone: 'utc',
+                        }
+                    },
                     type: 'time',
                     time: {
                         unit: graphType == 'Daily' ? 'hour' : 'day',
                         displayFormats: {
-                            hour: 'kk:mm',
+                            hour: 'H:mm',
                             day: 'd-M'
                         }
                     }
