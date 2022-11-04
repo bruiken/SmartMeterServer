@@ -98,6 +98,7 @@ namespace Concrete.Services
             (DateTime prevStart, DateTime prevEnd) = GetBoundaryDates(graphType, GetPreviousPeriodDate(date, graphType));
 
             IQueryable<Data.Models.MeterData> currentDataRange = _db.MeterData
+                .Where(d => d.InstallationId == installationId)
                 .Where(d => d.Time >= curStart)
                 .Where(d => d.Time <= curEnd);
             Data.Models.MeterData? curFirstData = currentDataRange
@@ -108,6 +109,7 @@ namespace Concrete.Services
                 .FirstOrDefault();
 
             IQueryable<Data.Models.MeterData> previousDataRange = _db.MeterData
+                .Where(d => d.InstallationId == installationId)
                 .Where(d => d.Time >= prevStart)
                 .Where(d => d.Time <= prevEnd);
             Data.Models.MeterData? prevFirstData = previousDataRange
