@@ -176,5 +176,16 @@
                 GasReadout = model.GasReadout,
             };
         }
+
+        public static Abstract.Models.EGraphType Convert(Models.EGraphType model)
+        {
+            return model switch
+            {
+                Models.EGraphType.Daily => Abstract.Models.EGraphType.Daily,
+                Models.EGraphType.Weekly => Abstract.Models.EGraphType.Weekly,
+                Models.EGraphType.Monthly => Abstract.Models.EGraphType.Monthly,
+                _ => throw new ArgumentException($"Unknown GraphType {model}"),
+            };
+        }
     }
 }

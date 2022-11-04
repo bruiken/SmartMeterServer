@@ -1,4 +1,4 @@
-﻿namespace Abstract.Models
+﻿namespace Rotom.Models
 {
     public enum EDataType
     {

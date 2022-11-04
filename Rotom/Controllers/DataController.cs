@@ -81,16 +81,17 @@ namespace Rotom.Controllers
             };
         }
 
-        private IEnumerable<Models.DeltaAnalysis.IDeltaAnalysis> CreateAnalysisModels(int installationId, DateTime date, Abstract.Models.EGraphType graphType, Abstract.Models.EDataType dataType)
+        private IEnumerable<Models.DeltaAnalysis.IDeltaAnalysis> CreateAnalysisModels(int installationId, DateTime date, Models.EGraphType graphType, Models.EDataType dataType)
         {
-            Abstract.Models.DeltaAnalysis? analysis = _dataService.GetAnalysis(installationId, date, graphType);
+            Abstract.Models.EGraphType abstractGraphType = Util.Converters.Convert(graphType);
+            Abstract.Models.DeltaAnalysis? analysis = _dataService.GetAnalysis(installationId, date, abstractGraphType);
 
             if (analysis != null)
             {
                 return dataType switch
                 {
-                    Abstract.Models.EDataType.Electricity => GetElectricityDeltaAnalysis(analysis),
-                    Abstract.Models.EDataType.Gas => GetGasDeltaAnalysis(analysis),
+                    Models.EDataType.Electricity => GetElectricityDeltaAnalysis(analysis),
+                    Models.EDataType.Gas => GetGasDeltaAnalysis(analysis),
                     _ => throw new ArgumentException($"Unknown DataType {dataType}"),
                 };
             }
@@ -135,9 +136,10 @@ namespace Rotom.Controllers
             });
         }
 
-        private Models.HistoryDataModel CreateModel(int installationId, DateTime date, Abstract.Models.EGraphType graphType, Abstract.Models.EDataType dataType)
+        private Models.HistoryDataModel CreateModel(int installationId, DateTime date, Models.EGraphType graphType, Models.EDataType dataType)
         {
-            IEnumerable<Abstract.Models.MeterData> data = _dataService.GetData(installationId, date, graphType);
+            Abstract.Models.EGraphType abstractGraphType = Util.Converters.Convert(graphType);
+            IEnumerable<Abstract.Models.MeterData> data = _dataService.GetData(installationId, date, abstractGraphType);
             Abstract.Models.Installation installation = _installationService.GetInstallation(installationId)!;
 
             Models.HistoryDataModel model = new()
@@ -155,8 +157,8 @@ namespace Rotom.Controllers
 
                 model.HistoryData = dataType switch
                 {
-                    Abstract.Models.EDataType.Electricity => CreateElectricityDataEntryModels(data, tzi),
-                    Abstract.Models.EDataType.Gas => CreateGasDataEntryModels(data, tzi),
+                    Models.EDataType.Electricity => CreateElectricityDataEntryModels(data, tzi),
+                    Models.EDataType.Gas => CreateGasDataEntryModels(data, tzi),
                     _ => throw new ArgumentException($"Unknown DataType {dataType}"),
                 };
             }
@@ -175,13 +177,13 @@ namespace Rotom.Controllers
                 return Unauthorized();
             }
 
-            Models.HistoryDataModel model = CreateModel(installationId, DateTime.Today, Abstract.Models.EGraphType.Daily, Abstract.Models.EDataType.Electricity);
+            Models.HistoryDataModel model = CreateModel(installationId, DateTime.Today, Models.EGraphType.Daily, Models.EDataType.Electricity);
             return View(model);
         }
 
         [HttpPost]
         [Route("Installation/{installationId}/History/{dataType}/{timespan}/{time}")]
-        public IActionResult HistoryPartial([FromRoute] int installationId, [FromRoute] Abstract.Models.EDataType dataType, [FromRoute] Abstract.Models.EGraphType timespan, [FromRoute] DateTime time)
+        public IActionResult HistoryPartial([FromRoute] int installationId, [FromRoute] Models.EDataType dataType, [FromRoute] Models.EGraphType timespan, [FromRoute] DateTime time)
         {
             if (!_currentUserService.CanAccessInstallation(installationId))
             {

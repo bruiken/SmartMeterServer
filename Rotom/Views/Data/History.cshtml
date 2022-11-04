@@ -19,19 +19,19 @@
         <div class="row d-flex justify-content-center">
             <div class="col-auto">
                 <div class="btn-group my-2 my-md-0" role="group" aria-label="Toggle graph range">
-                    @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Monthly, new { @class = "btn-check graph-input", autocomplete = "off", id = "monthly-m" })
+                    @Html.RadioButtonFor(m => m.GraphType, EGraphType.Monthly, new { @class = "btn-check graph-input", autocomplete = "off", id = "monthly-m" })
                     <label class="btn btn-outline-primary fw-bold" for="monthly-m">@_localizer[Resources.Views.Data.History.Month]</label>
-                    @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Weekly, new { @class = "btn-check graph-input", autocomplete = "off", id = "weekly-m" })
+                    @Html.RadioButtonFor(m => m.GraphType, EGraphType.Weekly, new { @class = "btn-check graph-input", autocomplete = "off", id = "weekly-m" })
                     <label class="btn btn-outline-primary fw-bold" for="weekly-m">@_localizer[Resources.Views.Data.History.Week]</label>
-                    @Html.RadioButtonFor(m => m.GraphType, Abstract.Models.EGraphType.Daily, new { @class = "btn-check graph-input", autocomplete = "off", id = "daily-m" })
+                    @Html.RadioButtonFor(m => m.GraphType, EGraphType.Daily, new { @class = "btn-check graph-input", autocomplete = "off", id = "daily-m" })
                     <label class="btn btn-outline-primary fw-bold" for="daily-m">@_localizer[Resources.Views.Data.History.Day]</label>
                 </div>
             </div>
             <div class="col-auto">
                 <div class="btn-group my-2 my-md-0" role="group" aria-label="Toggle graph range">
-                    @Html.RadioButtonFor(m => m.TypeOfData, Abstract.Models.EDataType.Electricity, new { @class = "btn-check graph-input", autocomplete = "off", id = "electricity-m" })
+                    @Html.RadioButtonFor(m => m.TypeOfData, EDataType.Electricity, new { @class = "btn-check graph-input", autocomplete = "off", id = "electricity-m" })
                     <label class="btn btn-outline-primary fw-bold" for="electricity-m">@_localizer[Resources.Views.Data.History.Electricity]</label>
-                    @Html.RadioButtonFor(m => m.TypeOfData, Abstract.Models.EDataType.Gas, new { @class = "btn-check graph-input", autocomplete = "off", id = "gas-m" })
+                    @Html.RadioButtonFor(m => m.TypeOfData, EDataType.Gas, new { @class = "btn-check graph-input", autocomplete = "off", id = "gas-m" })
                     <label class="btn btn-outline-primary fw-bold" for="gas-m">@_localizer[Resources.Views.Data.History.Gas]</label>
                 </div>
             </div>
