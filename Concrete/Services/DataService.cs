@@ -43,8 +43,13 @@ namespace Concrete.Services
                     DateTime temp = new(startTime.Year, startTime.Month, 1);
                     return (temp, temp.AddMonths(1).AddMilliseconds(-1));
                 case Abstract.Models.EGraphType.Weekly:
-                    int diffDays = DayOfWeek.Monday - startTime.DayOfWeek;
-                    temp = startTime.Date.AddDays(diffDays);
+                    DayOfWeek weekStartDay = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+                    int diffDays = startTime.DayOfWeek - weekStartDay;
+                    if (diffDays < 0)
+                    {
+                        diffDays += 7;
+                    }
+                    temp = startTime.Date.AddDays(-diffDays);
                     return (temp, temp.AddDays(7).AddMilliseconds(-1));
                 case Abstract.Models.EGraphType.Daily:
                     return (startTime.Date, startTime.Date.AddDays(1).AddMilliseconds(-1));
