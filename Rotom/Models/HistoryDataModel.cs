@@ -7,9 +7,11 @@ namespace Rotom.Models
         [DataType(DataType.Date)]
         public DateTime SelectedDate { get; set; }
 
-        public Models.EGraphType GraphType { get; set; }
+        public EGraphType GraphType { get; set; }
 
-        public Models.EDataType TypeOfData { get; set; }
+        public EDataType TypeOfData { get; set; }
+
+        public ECollectionType CollectionType { get; set; }
 
         public int InstallationId { get; set; }
 

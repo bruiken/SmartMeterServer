@@ -101,7 +101,7 @@ namespace Rotom.Controllers
             }
         }
 
-        private static IEnumerable<Models.HistoryData.ElectricityDataEntry> CreateElectricityDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi)
+        private static IEnumerable<Models.HistoryData.ElectricityDataEntry> CreateElectricityDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi, Models.ECollectionType collectionType)
         {
             decimal prevIn = data.First().KwhInT1 + data.First().KwhInT2;
             decimal prevOut = data.First().KwhOutT1 + data.First().KwhOutT2;
@@ -114,13 +114,16 @@ namespace Rotom.Controllers
                     KwhOut = decimal.Round(d.KwhOutT1 + d.KwhOutT2 - prevOut, 3),
                     TimeZone = tzi,
                 };
-                prevIn = d.KwhInT1 + d.KwhInT2;
-                prevOut = d.KwhOutT1 + d.KwhOutT2;
+                if (collectionType == Models.ECollectionType.Interval)
+                {
+                    prevIn = d.KwhInT1 + d.KwhInT2;
+                    prevOut = d.KwhOutT1 + d.KwhOutT2;
+                }
                 return result;
             });
         }
 
-        private static IEnumerable<Models.HistoryData.GasDataEntry> CreateGasDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi)
+        private static IEnumerable<Models.HistoryData.GasDataEntry> CreateGasDataEntryModels(IEnumerable<Abstract.Models.MeterData> data, TimeZoneInfo tzi, Models.ECollectionType collectionType)
         {
             decimal prevGas = data.First().GasReadout;
             return data.Select(d =>
@@ -131,12 +134,15 @@ namespace Rotom.Controllers
                     GasAmount = d.GasReadout - prevGas,
                     TimeZone = tzi,
                 };
-                prevGas = d.GasReadout;
+                if (collectionType == Models.ECollectionType.Interval)
+                {
+                    prevGas = d.GasReadout;
+                }
                 return result;
             });
         }
 
-        private Models.HistoryDataModel CreateModel(int installationId, DateTime date, Models.EGraphType graphType, Models.EDataType dataType)
+        private Models.HistoryDataModel CreateModel(int installationId, DateTime date, Models.EGraphType graphType, Models.EDataType dataType, Models.ECollectionType collectionType)
         {
             Abstract.Models.EGraphType abstractGraphType = Util.Converters.Convert(graphType);
             IEnumerable<Abstract.Models.MeterData> data = _dataService.GetData(installationId, date, abstractGraphType);
@@ -149,6 +155,7 @@ namespace Rotom.Controllers
                 GraphType = graphType,
                 InstallationName = installation.Name,
                 TypeOfData = dataType,
+                CollectionType = collectionType,
             };
 
             if (data.Any())
@@ -157,8 +164,8 @@ namespace Rotom.Controllers
 
                 model.HistoryData = dataType switch
                 {
-                    Models.EDataType.Electricity => CreateElectricityDataEntryModels(data, tzi),
-                    Models.EDataType.Gas => CreateGasDataEntryModels(data, tzi),
+                    Models.EDataType.Electricity => CreateElectricityDataEntryModels(data, tzi, collectionType),
+                    Models.EDataType.Gas => CreateGasDataEntryModels(data, tzi, collectionType),
                     _ => throw new ArgumentException($"Unknown DataType {dataType}"),
                 };
             }
@@ -177,20 +184,20 @@ namespace Rotom.Controllers
                 return Unauthorized();
             }
 
-            Models.HistoryDataModel model = CreateModel(installationId, DateTime.Today, Models.EGraphType.Daily, Models.EDataType.Electricity);
+            Models.HistoryDataModel model = CreateModel(installationId, DateTime.Today, Models.EGraphType.Daily, Models.EDataType.Electricity, Models.ECollectionType.Interval);
             return View(model);
         }
 
         [HttpPost]
-        [Route("Installation/{installationId}/History/{dataType}/{timespan}/{time}")]
-        public IActionResult HistoryPartial([FromRoute] int installationId, [FromRoute] Models.EDataType dataType, [FromRoute] Models.EGraphType timespan, [FromRoute] DateTime time)
+        [Route("Installation/{installationId}/History/{collectionType}/{dataType}/{timespan}/{time}")]
+        public IActionResult HistoryPartial([FromRoute] int installationId, [FromRoute] Models.ECollectionType collectionType, [FromRoute] Models.EDataType dataType, [FromRoute] Models.EGraphType timespan, [FromRoute] DateTime time)
         {
             if (!_currentUserService.CanAccessInstallation(installationId))
             {
                 return Unauthorized();
             }
 
-            Models.HistoryDataModel model = CreateModel(installationId, time, timespan, dataType);
+            Models.HistoryDataModel model = CreateModel(installationId, time, timespan, dataType, collectionType);
             return PartialView("_HistoryChartPartial", model);
         }
     }

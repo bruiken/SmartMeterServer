@@ -9,5 +9,7 @@
         public const string ToLivePage = "ToLivePage";
         public const string Electricity = "Electricity";
         public const string Gas = "Gas";
+        public const string Interval = "Interval";
+        public const string Cumulative = "Cumulative";
     }
 }

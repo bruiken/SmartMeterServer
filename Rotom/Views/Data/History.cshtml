@@ -40,6 +40,20 @@
 </div>
 <div class="row justify-content-center">
     <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom">
+        <div class="row d-flex justify-content-center">
+            <div class="col-auto">
+                <div class="btn-group my-2 my-md-0" role="group" aria-label="Toggle graph range">
+                    @Html.RadioButtonFor(m => m.CollectionType, ECollectionType.Interval, new { @class = "btn-check graph-input", autocomplete = "off", id = "interval-m" })
+                    <label class="btn btn-outline-primary fw-bold" for="interval-m">@_localizer[Resources.Views.Data.History.Interval]</label>
+                    @Html.RadioButtonFor(m => m.CollectionType, ECollectionType.Cumulative, new { @class = "btn-check graph-input", autocomplete = "off", id = "cumulative-m" })
+                    <label class="btn btn-outline-primary fw-bold" for="cumulative-m">@_localizer[Resources.Views.Data.History.Cumulative]</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom">
         <div class="row justify-content-center">
             <div class="col-auto pe-0">
                 <button id="prevButton" role="button" class="btn btn-primary">&lt;</button>
@@ -104,12 +118,13 @@
             function reloadGraph() {
                 const graphType = $('input[name=GraphType]:checked').val();
                 const dataType = $('input[name=TypeOfData]:checked').val();
+                const collectionType = $('input[name=CollectionType]:checked').val();
                 const dateRaw = $('#date-select').datepicker('getDate');
                 const dateUTC = new Date(Date.UTC(dateRaw.getFullYear(), dateRaw.getMonth(), dateRaw.getDate()));
                 const date = dateUTC.toISOString().slice(0, 10)
                 
                 $.ajax({
-                    url: `History/${dataType}/${graphType}/${date}`,
+                    url: `History/${collectionType}/${dataType}/${graphType}/${date}`,
                     type: 'POST',
                     success: function (res) {
                         $('#historyChart').html(res);

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Cumulative" xml:space="preserve">
+    <value>Cumulative</value>
+  </data>
   <data name="Day" xml:space="preserve">
     <value>Day</value>
   </data>
@@ -128,6 +131,9 @@
   </data>
   <data name="HistoricalData" xml:space="preserve">
     <value>Historical data - {0}</value>
+  </data>
+  <data name="Interval" xml:space="preserve">
+    <value>Interval</value>
   </data>
   <data name="Month" xml:space="preserve">
     <value>Month</value>
