@@ -3,11 +3,11 @@
 @inject IViewLocalizer _localizer
 
 @{
-    string uniqueId = "_" + System.Guid.NewGuid().ToString().Replace("-", "");
+    string uniqueId = "_" + Model.Id;
 }
 
 <div class="row justify-content-center pt-4">
-    <div class="col col-md-8 bg-light border bg-opacity-10 bg-gradient pb-1 pt-2 rounded-top d-flex">
+    <div class="col col-md-8 border bg-secondary-subtle pb-1 pt-2 rounded-top d-flex">
         <h2>@Model.Name</h2>
         <div class="ms-auto">
             <a class="btn btn-primary" href="@Url.Action(Controllers.DataController.Actions.History, new { installationId = Model.Id })">@_localizer[Resources.Views.Data._LiveDataPartial.ToHistoricalData]</a>
@@ -31,14 +31,14 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="col col-md-8 py-3 bg-light bg-opacity-10 bg-gradient border-start border-end border-bottom rounded-bottom position-relative">
+    <div class="col col-md-8 py-3 bg-body-tertiary border-start border-end border-bottom rounded-bottom position-relative">
         <canvas id="@(uniqueId)_liveChart"></canvas>
         <span id="@(uniqueId)-no-connection" class="position-absolute top-0 end-0 fw-bold p-1 text-warning">@_localizer[Resources.Views.Data._LiveDataPartial.NoConnection]</span>
     </div>
 </div>
 
 <script type="text/javascript">
-    $(() => {
+    function loadLiveData@(uniqueId)() {
         const @(uniqueId)_liveChart = new Chart(
             $('#@(uniqueId)_liveChart'),
             getLiveChartConfig()
@@ -106,5 +106,5 @@
             }
             @(uniqueId)_initializing = false;
         }
-    });
+    }
 </script>

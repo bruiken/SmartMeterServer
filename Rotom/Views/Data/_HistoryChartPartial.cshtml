@@ -2,13 +2,9 @@
 
 @inject IViewLocalizer _localizer;
 
-@{
-    string uniqueId = "_" + System.Guid.NewGuid().ToString().Replace("-", "");
-}
-
 <div class="row justify-content-center">
-    <div class="col col-md-8 py-3 position-relative d-flex justify-content-center bg-light bg-opacity-10 bg-gradient border-start border-end border-bottom rounded-bottom">
-        <canvas id="@(uniqueId)_historyChart"></canvas>
+    <div class="col col-md-8 py-3 position-relative d-flex justify-content-center bg-body-tertiary border-start border-end border-bottom">
+        <canvas id="historyChartCanvas"></canvas>
         @if (Model.HistoryData == null || !Model.HistoryData.Any())
         {
             <span class="position-absolute align-self-center">@_localizer[Resources.Views.Data._HistoryChartPartial.NoData]</span>
@@ -26,25 +22,24 @@
 @if (Model.HistoryData != null && Model.HistoryData.Any())
 {
     <script type="text/javascript">
-        $(() => {
-            const @(uniqueId)_historyChart = new Chart(
-                $('#@(uniqueId)_historyChart'),
+        function loadHistoryChart() {
+            const historyChart = new Chart(
+                $('#historyChartCanvas'),
                 getHistoryChartConfig('@(Model.GraphType.ToString())', '@(Model.TypeOfData.ToString())')
             );
-
-            @(uniqueId)_historyChart.data.datasets[0].data = eval(@Html.Raw(Model.HistoryJson));
-            @(uniqueId)_historyChart.update('none');
-        });
+            historyChart.data.datasets[0].data = eval(@Html.Raw(Model.HistoryJson));
+            historyChart.update('none');
+        }
     </script>
 }
 else
 {
     <script type="text/javascript">
-        $(() => {
-            const @(uniqueId)_historyChart = new Chart(
-                $('#@(uniqueId)_historyChart'),
+        function loadHistoryChart() {
+            const historyChart = new Chart(
+                $('#historyChartCanvas'),
                 getHistoryChartConfig()
             );
-        });
+        }
     </script>
 }

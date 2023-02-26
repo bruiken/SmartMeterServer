@@ -7,7 +7,7 @@
 }
 
 <div class="row justify-content-center pt-4">
-    <div class="col col-md-8 bg-light border bg-opacity-10 bg-gradient pb-1 pt-2 rounded-top d-flex">
+    <div class="col col-md-8 bg-secondary-subtle border pb-1 pt-2 rounded-top d-flex">
         <h2>@Model.InstallationName</h2>
         <div class="ms-auto">
             <a class="btn btn-primary" href="@Url.Action(Controllers.DataController.Actions.Live)">@_localizer[Resources.Views.Data.History.ToLivePage]</a>
@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom">
+    <div class="col col-md-8 bg-body-tertiary py-2 border-start border-end border-bottom">
         <div class="row d-flex justify-content-center">
             <div class="col-auto">
                 <div class="btn-group my-2 my-md-0" role="group" aria-label="Toggle graph range">
@@ -39,7 +39,7 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom">
+    <div class="col col-md-8 bg-body-tertiary py-2 border-start border-end border-bottom">
         <div class="row d-flex justify-content-center">
             <div class="col-auto">
                 <div class="btn-group my-2 my-md-0" role="group" aria-label="Toggle graph range">
@@ -53,7 +53,7 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="col col-md-8 bg-light bg-opacity-10 py-2 border-start border-end border-bottom">
+    <div class="col col-md-8 bg-body-tertiary py-2 border-start border-end border-bottom">
         <div class="row justify-content-center">
             <div class="col-auto pe-0">
                 <button id="prevButton" role="button" class="btn btn-primary">&lt;</button>
@@ -128,9 +128,12 @@
                     type: 'POST',
                     success: function (res) {
                         $('#historyChart').html(res);
+                        loadHistoryChart();
                     }
                 });
             }
+
+            loadHistoryChart();
         });
     </script>
 }

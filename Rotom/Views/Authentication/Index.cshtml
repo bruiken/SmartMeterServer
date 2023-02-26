@@ -32,7 +32,10 @@
         </div>
         <div class="flex-row">
             <div class="flex-column">
-                @Html.CheckBoxFor(m => m.RememberMe)&nbsp;@Html.LabelFor(m => m.RememberMe, _localizer.GetString(Resources.Views.Authentication.Index.RememberMe).Value)
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input" })
+                    @Html.LabelFor(m => m.RememberMe, _localizer.GetString(Resources.Views.Authentication.Index.RememberMe).Value, new { @class = "form-check-label" })
+                </div>
             </div>
         </div>
         <div class="flex-row">
